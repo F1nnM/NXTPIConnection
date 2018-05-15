@@ -7,6 +7,13 @@
 * [RaspAp](https://github.com/billz/raspap-webgui)
 * [GumCP](https://github.com/gumslone/GumCP)
 
+## Installation
+
+Install from shell prompt:
+```sh
+$ wget -q https://git.io/vp7yH -O /tmp/installer && bash /tmp/installer
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
