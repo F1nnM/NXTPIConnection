@@ -11,7 +11,7 @@
 
 Install from shell prompt:
 ```sh
-$ wget -q https://git.io/vp7yH -O /tmp/installer && bash /tmp/installer
+$ sudo wget -q https://git.io/vp7yH -O /tmp/installer && bash /tmp/installer
 ```
 
 ## License
