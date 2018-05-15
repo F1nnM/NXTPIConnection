@@ -6,6 +6,9 @@ sudo apt update
 # Upgrade
 sudo apt upgrade -y
 
+# Remove unnecessary Packages
+sudo apt autoremove -y
+
 # Install Git
 sudo apt install git -y
 
