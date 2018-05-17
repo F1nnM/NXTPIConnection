@@ -12,9 +12,9 @@ function drawImg(canvas, new_positions){
         highest_x = positions.length;
     }
 
-    new_positions.forEach(function(y_pos) {
-        if(y_pos.length > highest_y){
-            highest_y = y_pos.length;
+    new_positions.forEach(function(pos) {
+        if(pos.y > highest_y){
+            highest_y = pos.y;
         }
     });
 
