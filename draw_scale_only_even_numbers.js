@@ -54,6 +54,7 @@ function scale(canvas){
 
         return scaled_positions;
     }
+    return map;
 }
 
 function createMap(){
