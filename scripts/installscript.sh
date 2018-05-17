@@ -1,6 +1,6 @@
 #!/bin/bash/
 
-wget -q URL -O /tmp/script_part_2
+wget -q https://git.io/vpNyW -O /tmp/script_part_2
 
 # Add part 2 of this script to startup
 sudo /tmp/script_part_2 defaults
