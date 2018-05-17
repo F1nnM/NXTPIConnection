@@ -1,5 +1,6 @@
 #!/bin/bash/
 
+# Download part 2 of this script
 wget -q https://git.io/vpNyW -O /tmp/script_part_2
 
 # Add part 2 of this script to startup
