@@ -50,24 +50,28 @@ function scale(canvas){
             raw_delta_y = y_percentage
         }
 
+        var old_x;
         for(x = 0; x < map; x = x + raw_delta_x){
             var round_x = Math.floor(x);
-            var y_positions = [];
-            for (var y = 0; y < map[round_x].length; y = y + delta){
-                var round_y = Math.floor(y);
-                var set_1 = map[round_x - 1][round_y] && (map[round_x][round_y -1] || map[round_x + 1][round_y] || map[round_x][round_y + 1]);
-                var set_2 = map[round_x + 1][round_y] && (map[round_x][round_y -1] || map[round_x][round_y + 1]);
-                var set_3 = map[round_x][round_y - 1] && map[round_x][round_y + 1];
-                if(set_1 || set_2 || set_3){
-                    y_positions.push(true);
-                } else if((map[round_x - 1][round_y] || map[round_x][round_y -1] || map[round_x + 1][round_y] || map[round_x][round_y + 1]) && y % 1 > 0.49){
-                    y_positions.push(true);
-                } else {
-                    y_positions.push(false);
+            if(old_x != round_x){
+                old_x = round_x;
+                var y_positions = [];
+                for (var y = 0; y < map[round_x].length; y = y + delta){
+                    var round_y = Math.floor(y);
+                    var set_1 = map[round_x - 1][round_y] && (map[round_x][round_y -1] || map[round_x + 1][round_y] || map[round_x][round_y + 1]);
+                    var set_2 = map[round_x + 1][round_y] && (map[round_x][round_y -1] || map[round_x][round_y + 1]);
+                    var set_3 = map[round_x][round_y - 1] && map[round_x][round_y + 1];
+                    if(set_1 || set_2 || set_3){
+                        y_positions.push(true);
+                    } else if((map[round_x - 1][round_y] || map[round_x][round_y -1] || map[round_x + 1][round_y] || map[round_x][round_y + 1]) && y % 1 > 0.49){
+                         y_positions.push(true);
+                    } else {
+                        y_positions.push(false);
+                    }
+                 y_positions.push(map[round_x][round_y]);
                 }
-                y_positions.push(map[round_x][round_y]);
+                scaled_positions[x].push(y_positions);
             }
-            scaled_positions[x].push(y_positions);
         }
 
         return scaled_positions;
