@@ -31,11 +31,11 @@ function drawImg(canvas, new_positions){
     }
 }
 
-function scale(canvas){
-    if(highest_x > canvas.width || highest_y > canvas.height){
+function scale(ctx){
+    if(highest_x > ctx.canvas.width || highest_y > ctx.canvas.height){
         var scaled_positions = [];
-        var x_percentage = highest_x / canvas.width;
-        var y_percentage = highest_y / canvas.height;
+        var x_percentage = highest_x / ctx.canvas.width;
+        var y_percentage = highest_y / ctx.canvas.height;
         var delta;
 
         if(x_percentage > y_percentage){
