@@ -8,13 +8,13 @@ function drawImg(canvas, new_positions){
     ctx.fillStyle = "#000000";
     positions.push.apply(positions, new_positions);
 
-    if(positions.length > highest_x){
-        highest_x = positions.length;
-    }
-
     new_positions.forEach(function(pos) {
-        if(pos.y > highest_y){
-            highest_y = pos.y;
+        if (pos.y > highest_y) {
+            highest_y = pos.y + 1;
+        }
+
+        if (pos.x > highest_x) {
+            highest_x = pos.x + 1;
         }
     });
 
@@ -32,7 +32,7 @@ function drawImg(canvas, new_positions){
 }
 
 function scale(ctx){
-    if(highest_x > ctx.canvas.width || highest_y > ctx.canvas.height){
+    if(highest_x > canvas.width || highest_y > canvas.height){
         var scaled_positions = [];
         var x_percentage = highest_x / ctx.canvas.width;
         var y_percentage = highest_y / ctx.canvas.height;
@@ -58,15 +58,16 @@ function scale(ctx){
 }
 
 function createMap(){
-    for (var x = 0; x < highest_x; x++){
+    map = [];
+    for (var x = 0; x < highest_x; x++) {
         var y_positions = [];
-        for(var y = 0; y < highest_y; y++){
-            y_positions.push(false);
+        for (var y = 0; y < highest_y; y++) {
+            y_positions[y] = false;
         }
-        map.push(y_positions);
+        map[x] = y_positions.slice();
     }
 
-    positions.forEach(function(pos){
+    positions.forEach(function (pos) {
         map[pos.x][pos.y] = true;
     });
 }
