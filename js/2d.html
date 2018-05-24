@@ -1,0 +1,104 @@
+<html lang="en">
+
+<head>
+    <script>
+        document.addEventListener("keyup", function (e) {
+            var key = e.keyCode ? e.keyCode : e.which;
+            window.parent.postMessage("" + key, "*");
+        }, true);
+
+        var positions = [];
+        var map = [];
+        var highest_x = 0;
+        var highest_y = 0;
+
+        function addData(data) {
+            d = []
+            for (i = 1; i < 9; i++) {
+                d.push(data["Sens" + i]);
+            }
+            drawImg(document.querySelector("canvas"), d);
+        }
+
+        function drawImg(canvas, new_positions) {
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#000000";
+            positions.push.apply(positions, new_positions);
+
+            for (i = 0; i < new_positions.length; i++) {
+                highest_x = Math.max(highest_x, new_positions[i].x);
+                highest_y = Math.max(highest_y, new_positions[i].y);
+            }
+
+            createMap();
+            console.log(map);
+
+            var scaled_positions = scale(canvas.getContext("2d"));
+
+            for (var x = 0; x <= scaled_positions.length; x++) {
+                for (var y; y <= scaled_positions[x].length; y++) {
+                    if (positions[x][y]) {
+                        ctx.fillRect(x, y, 1, 1);
+                    }
+                }
+            }
+        }
+
+        function scale(ctx) {
+            if (highest_x > ctx.canvas.width || highest_y > ctx.canvas.height) {
+                var scaled_positions = [];
+                var x_percentage = highest_x / ctx.canvas.width;
+                var y_percentage = highest_y / ctx.canvas.height;
+                var delta;
+
+                if (x_percentage > y_percentage) {
+                    delta = Math.floor(x_percentage);
+                } else {
+                    delta = Math.floor(y_percentage);
+                }
+
+                for (x = 0; x < map.length; x = x + delta) {
+                    var y_positions = [];
+                    for (var y = 0; y < map[x].length; y = y + delta) {
+                        y_positions[y] = map[x][y];
+                    }
+                    scaled_positions[x] = y_positions.splice();
+                }
+
+                return scaled_positions;
+            }
+            return map;
+        }
+
+        function createMap() {
+            for (var x = 0; x < highest_x; x++) {
+                var y_positions = [];
+                for (var y = 0; y < highest_y; y++) {
+                    y_positions.push(false);
+                }
+                map.push(y_positions);
+            }
+            positions.forEach(function (pos) {
+                map[pos.x][pos.y] = true;
+            });
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+</body>
+
+</html>
