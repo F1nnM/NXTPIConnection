@@ -58,9 +58,9 @@
                     delta = Math.floor(y_percentage);
                 }
 
-                for (x = 0; x <= map.length; x = x + delta) {
+                for (x = 0; x < map.length; x = x + delta) {
                     var y_positions = [];
-                    for (var y = 0; y <= map[x].length; y = y + delta) {
+                    for (var y = 0; y < map[x].length; y = y + delta) {
                         y_positions[y] = map[x][y];
                     }
                     scaled_positions[x] = y_positions;
