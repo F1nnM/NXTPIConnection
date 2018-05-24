@@ -37,7 +37,7 @@
 
             for (var x = 0; x < scaled_positions.length; x++) {
                 console.log(scaled_positions[x]);
-                for (var y; y <= scaled_positions[x].length; y++) {
+                for (var y = 0; y < scaled_positions[x].length; y++) {
                     if (scaled_positions[x][y]) {
                         ctx.fillRect(x, y, 1, 1);
                     }
