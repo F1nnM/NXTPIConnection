@@ -31,11 +31,12 @@
             }
 
             createMap();
-            console.log(map);
 
             var scaled_positions = scale(canvas.getContext("2d"));
+            //console.log(scaled_positions);
 
-            for (var x = 0; x <= scaled_positions.length; x++) {
+            for (var x = 0; x < scaled_positions.length; x++) {
+                console.log(scaled_positions[x]);
                 for (var y; y <= scaled_positions[x].length; y++) {
                     if (scaled_positions[x][y]) {
                         ctx.fillRect(x, y, 1, 1);
@@ -71,13 +72,15 @@
         }
 
         function createMap() {
-            for (var x = 0; x < highest_x; x++) {
+            map = [];
+            for (var x = 0; x <= highest_x; x++) {
                 var y_positions = [];
-                for (var y = 0; y < highest_y; y++) {
+                for (var y = 0; y <= highest_y; y++) {
                     y_positions[y] = false;
                 }
-                map[x] = y_positions;
+                map[x] = y_positions.slice();
             }
+
             positions.forEach(function (pos) {
                 map[pos.x][pos.y] = true;
             });
