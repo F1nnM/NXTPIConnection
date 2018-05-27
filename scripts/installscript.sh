@@ -9,10 +9,6 @@ CYAN='\033[1;36m'
 echo -e "${CYAN}Downloading second part of this script...$NC"
 sudo wget -q https://git.io/vpNyW -O /home/pi/script_part_2
 
-#Download the phpmyadmin.conf
-echo -e "${CYAN}Downloading phpmyadmin.conf...$NC"
-sudo wget -q https://git.io/vhmUM -O /home/pi/phpmyadmin.conf
-
 # Add part 2 of this script to startup
 echo -e "${CYAN}Adding second part to startup...$NC"
 (crontab -l ; echo "@reboot bash /home/pi/script_part_2 >> /tmp/installscript_out.log 2>&1") | crontab -
