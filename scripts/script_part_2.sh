@@ -54,7 +54,10 @@ sudo apt install php7.0-mysql php7.0-curl php7.0-gd php7.0-intl php-pear php-ima
 sudo service php7.0-fpm reload
 
 # Install phpmyadmin
+export DEBIAN_FRONTEND=noninteractive
 sudo apt install phpmyadmin -y
+sudo cp /tmp/phpmyadmin.conf /etc/dbconfig-common/phpmyadmin.conf
+dpkg-reconfigure --frontend=noninteractive phpmyadmin
 
 # Reload lighttpd
 sudo /etc/init.d/lighttpd force-reload
