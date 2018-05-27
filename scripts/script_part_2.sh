@@ -1,5 +1,7 @@
+#!/bin/bash/
+
 # Remove this script from startup
-sudo crontab -l | grep -v "@reboot bash /tmp/script_part_2 >> /tmp/installscript_out.log 2>&1" | crontab -
+sudo crontab -l | grep -v "@reboot bash /home/pi/script_part_2 >> /tmp/installscript_out.log 2>&1" | crontab -
 
 # Create Directory for RaspAp
 sudo mkdir /var/www/html/raspap
@@ -56,7 +58,7 @@ sudo service php7.0-fpm reload
 # Install phpmyadmin
 export DEBIAN_FRONTEND=noninteractive
 sudo apt install phpmyadmin -y
-sudo cp /tmp/phpmyadmin.conf /etc/dbconfig-common/phpmyadmin.conf
+sudo cp /home/pi/phpmyadmin.conf /etc/dbconfig-common/phpmyadmin.conf
 dpkg-reconfigure --frontend=noninteractive phpmyadmin
 
 # Reload lighttpd
