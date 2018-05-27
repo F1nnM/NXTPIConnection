@@ -5,6 +5,10 @@ GREEN='\033[1;32m'
 NC='\033[0m'
 CYAN='\033[1;36m'
 
+# Expand Filesystem
+echo -e "${CYAN}Expanding Filesystem...$NC"
+sudo raspi-config nonint do_expand_rootfs
+
 # Download part 2 of this script
 echo -e "${CYAN}Downloading second part of this script...$NC"
 sudo wget -q https://git.io/vpNyW -O /home/pi/script_part_2
