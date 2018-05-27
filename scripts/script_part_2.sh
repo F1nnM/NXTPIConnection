@@ -83,6 +83,11 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.0-mysql php7.0-curl php
 echo -e "${CYAN}Reloading php7.0-fpm...$NC"
 sudo service php7.0-fpm reload
 
+# Install Web Site
+echo -e "${CYAN}Installing Web Site...$NC"
+git clone https://github.com/MelzerFinn/Info18Web /tmp/Info18Web
+sudo mv /tmp/Info18Web/info2/* /var/www/html/
+
 # Install phpmyadmin
 echo -e "${CYAN}Installing phpmyadmin...$NC"
 sudo export DEBIAN_FRONTEND=noninteractive
