@@ -107,6 +107,9 @@ sudo apt-get install oracle-java8-jdk -y
 echo -e "${CYAN}Deleting this script...$NC"
 sudo rm /home/pi/script_part_2
 
+# Mark Installation as Done
+echo "Instinfo:DONE."
+
 # Install BrickPi drivers
 echo -e "${CYAN}Installing BrickPi drivers...$NC"
 sudo curl -kL dexterindustries.com/update_brickpi_plus | bash
