@@ -1,7 +1,7 @@
 #!/bin/bash/
 
 # Output the log file
-echo "$(cat /home/pi/installscript_out.log)"
+echo -e "$(cat /home/pi/installscript_out.log)"
 
 # Delete files
 sudo rm /home/pi/display_log
