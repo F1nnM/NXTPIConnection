@@ -34,6 +34,8 @@ sudo mkdir /var/www/html/admin
 echo -e "${CYAN}Cloning GumCP...$NC"
 sudo git clone https://github.com/gumslone/GumCP.git /var/www/html/admin/
 
+export DEBIAN_FRONTEND=noninteractive
+
 # Install PHP 7.0 and mariadb
 echo -e "${CYAN}Installing PHP 7.0 and mariadb...$NC"
 sudo apt-get install php7.0-fpm php7.0 php-ssh2 php-cgi mariadb-server mariadb-client -y
@@ -86,7 +88,7 @@ sudo service php7.0-fpm reload
 # Install phpmyadmin
 echo -e "${CYAN}Installing phpmyadmin...$NC"
 export DEBIAN_FRONTEND=noninteractive
-sudo echo 'yes\n' | apt-get install phpmyadmin -y
+sudo yes | apt-get install phpmyadmin
 sudo cp /tmp/phpmyadmin.conf /etc/dbconfig-common/phpmyadmin.conf
 echo -e "${CYAN}Running dpkg-reconfigure on phpmyadmin...$NC"
 dpkg-reconfigure --frontend=noninteractive phpmyadmin
