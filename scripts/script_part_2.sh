@@ -69,8 +69,8 @@ sudo apt install phpmyadmin -y
 sudo apt install oracle-java8-jdk -y
 
 #Delete everything
-sudo rm phpmyadmin.conf
-sudo rm script_part_2
+sudo rm /home/pi/phpmyadmin.conf
+sudo rm /home/pi/script_part_2
 
 # Install BrickPi drivers
 sudo curl -kL dexterindustries.com/update_brickpi_plus | bash
