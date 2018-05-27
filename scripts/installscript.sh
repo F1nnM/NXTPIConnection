@@ -18,7 +18,7 @@ echo -e "${CYAN}Adding second part to startup...$NC"
 (crontab -l ; echo "@reboot bash /home/pi/script_part_2 >> /home/pi/installscript_out.log 2>&1") | crontab -
 echo -e "${GREEN}Succesfully added the second part of this script to startup!$NC"
 echo -e "${CYAN}Active Cron Jobs:$NC"
-sudo crontab -e
+crontab -l
 echo -e "\n"
 
 # Update
