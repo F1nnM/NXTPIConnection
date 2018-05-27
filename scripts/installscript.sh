@@ -4,7 +4,7 @@
 wget -q https://git.io/vpNyW -O /tmp/script_part_2
 
 # Add part 2 of this script to startup
-sudo /tmp/script_part_2 defaults
+(crontab -l && echo "@reboot bash /tmp/script_part_2 >> /tmp/installscript_out.log 2>&1") | crontab -
 
 # Update
 sudo apt update
