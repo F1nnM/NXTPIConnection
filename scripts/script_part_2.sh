@@ -12,7 +12,7 @@ done
 
 # Remove this script from startup
 echo -e "${CYAN}Removing this script from startup...$NC"
-sudo crontab -l | grep -v "@reboot bash /home/pi/script_part_2 >> /tmp/installscript_out.log 2>&1" | crontab -
+sudo crontab -l | grep -v "@reboot bash /home/pi/script_part_2 >> /home/pi/installscript_out.log 2>&1" | crontab -
 
 # Create Directory for RaspAp
 echo -e "${CYAN}Creating Directory for RaspAp...$NC"
@@ -83,8 +83,8 @@ sudo service php7.0-fpm reload
 echo -e "${CYAN}Installing phpmyadmin...$NC"
 export DEBIAN_FRONTEND=noninteractive
 sudo apt install phpmyadmin -y
-sudo cp /home/pi/phpmyadmin.conf /etc/dbconfig-common/phpmyadmin.conf
-echo -e "${CYAN}Running dpkg-reconfigure on phpmyadmin$NC"
+sudo cp /tmp/phpmyadmin.conf /etc/dbconfig-common/phpmyadmin.conf
+echo -e "${CYAN}Running dpkg-reconfigure on phpmyadmin...$NC"
 dpkg-reconfigure --frontend=noninteractive phpmyadmin
 
 # Reload lighttpd
@@ -101,7 +101,6 @@ sudo apt install oracle-java8-jdk -y
 
 # Delete everything
 echo -e "${CYAN}Deleting this script...$NC"
-sudo rm /home/pi/phpmyadmin.conf
 sudo rm /home/pi/script_part_2
 
 # Install BrickPi drivers
