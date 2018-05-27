@@ -2,7 +2,7 @@
 
 # Check if installation is done
 File=installscript_out.log
-if grep -q 1 "$File";
+if grep -q Instinfo:DONE. "$File";
 then
         # Output the log file
         echo -e "$(cat /home/pi/installscript_out.log)"
