@@ -88,9 +88,9 @@ sudo service php7.0-fpm reload
 # Install phpmyadmin
 echo -e "${CYAN}Installing phpmyadmin...$NC"
 export DEBIAN_FRONTEND=noninteractive
-sudo apt-get install phpmyadmin -y -q
 sudo sh -c "echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections"
 sudo sh -c "echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect lighttpd' | debconf-set-selections"
+sudo DEBIAN_FRONTEND=noninteractive apt-get install phpmyadmin -y -q
 #sudo cp /tmp/phpmyadmin.conf /etc/dbconfig-common/phpmyadmin.conf
 echo -e "${CYAN}Running dpkg-reconfigure on phpmyadmin...$NC"
 dpkg-reconfigure --frontend=noninteractive phpmyadmin
