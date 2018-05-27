@@ -14,6 +14,10 @@ done
 echo -e "${CYAN}Removing this script from startup...$NC"
 sudo crontab -l | grep -v "@reboot bash /home/pi/script_part_2 >> /home/pi/installscript_out.log 2>&1" | crontab -
 
+#Download the phpmyadmin.conf
+echo -e "${CYAN}Downloading phpmyadmin.conf...$NC"
+sudo wget -q https://git.io/vhmUM -O /tmp/phpmyadmin.conf
+
 # Create Directory for RaspAp
 echo -e "${CYAN}Creating Directory for RaspAp...$NC"
 sudo mkdir /var/www/html/raspap
