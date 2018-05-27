@@ -9,7 +9,7 @@
 
 ## Installation
 
-####Install from shell prompt:
+#### Install from shell prompt:
 ```sh
 $ sudo wget -q https://git.io/vpNMY -O /tmp/installer && bash /tmp/installer
 ```
