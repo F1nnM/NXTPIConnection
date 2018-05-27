@@ -1,7 +1,7 @@
 var positions = [];
 var map = [];
-var highest_x;
-var highest_y;
+var highest_x = 0;
+var highest_y = 0;
 
 function drawImg(canvas, new_positions){
     var ctx = canvas.getContext("2d");
