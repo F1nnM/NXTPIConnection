@@ -14,7 +14,13 @@ Install from shell prompt:
 $ sudo wget -q https://git.io/vpNMY -O /tmp/installer && bash /tmp/installer
 ```
 
-To see the output of the second part script, just type (in pi's home directory):
+The script then will automatically download the second part of the script.
+The pi should reboot two times during the installation process.
+After the first reboot, the output of the installation will be sent into a log file.
+
+The Output can be seen with the display_log script:
+
+#### To see the output of the second part script, just type (in pi's home directory):
 ```sh
 $ bash display_log
 ```
