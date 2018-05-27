@@ -1,5 +1,5 @@
 # Remove this script from startup
-sudo update-rc.d -f /tmp/script_part_2 remove
+sudo crontab -l | grep -v "@reboot bash /tmp/script_part_2 >> /tmp/installscript_out.log 2>&1" | crontab -
 
 # Create Directory for RaspAp
 sudo mkdir /var/www/html/raspap
