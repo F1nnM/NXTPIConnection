@@ -38,7 +38,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Install PHP 7.0 and mariadb
 echo -e "${CYAN}Installing PHP 7.0 and mariadb...$NC"
-sudo apt-get install php7.0-fpm php7.0 php-ssh2 php-cgi mariadb-server mariadb-client -y
+sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.0-fpm php7.0 php-ssh2 php-cgi mariadb-server mariadb-client -y -q
 
 # Replace line in php-fpm config
 echo -e "${CYAN}Uncommenting line in php config file...$NC"
@@ -79,7 +79,7 @@ sudo service lighttpd force-reload
 
 # Install php packages
 echo -e "${CYAN}Installing php packages...$NC"
-sudo apt-get install php7.0-mysql php7.0-curl php7.0-gd php7.0-intl php-pear php-imagick php7.0-imap php7.0-mcrypt php-memcache php7.0-pspell php7.0-recode php7.0-sqlite3 php7.0-tidy php7.0-xmlrpc php7.0-xsl php7.0-mbstring php-gettext php-apcu -y
+sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.0-mysql php7.0-curl php7.0-gd php7.0-intl php-pear php-imagick php7.0-imap php7.0-mcrypt php-memcache php7.0-pspell php7.0-recode php7.0-sqlite3 php7.0-tidy php7.0-xmlrpc php7.0-xsl php7.0-mbstring php-gettext php-apcu -y -q
 
 # Reload php7.0-fpm
 echo -e "${CYAN}Reloading php7.0-fpm...$NC"
