@@ -1,5 +1,11 @@
 #!/bin/bash/
 
+# Wait for Network
+while ! ping -c 1 -W 1 8.8.8.8; do
+    echo "Waiting for 8.8.8.8 - network interface might be down..."
+    sleep 1
+done
+
 # Remove this script from startup
 sudo crontab -l | grep -v "@reboot bash /home/pi/script_part_2 >> /tmp/installscript_out.log 2>&1" | crontab -
 
@@ -70,7 +76,7 @@ sudo apt install phpmyadmin -y
 # Install Java
 sudo apt install oracle-java8-jdk -y
 
-#Delete everything
+# Delete everything
 sudo rm /home/pi/phpmyadmin.conf
 sudo rm /home/pi/script_part_2
 
