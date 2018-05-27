@@ -40,6 +40,6 @@ sudo apt install git -y
 echo -e "${CYAN}Installing Raspap...$NC"
 wget -q https://git.io/voEUQ -O /tmp/raspap && yes y | sudo bash /tmp/raspap
 
-# Reboot
-echo -e "${CYAN} $NC"
+# Reboot, if RaspAp Installation Reboot not fires
+echo -e "${CYAN}Reboot.$NC"
 sudo reboot now
