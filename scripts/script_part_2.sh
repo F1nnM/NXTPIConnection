@@ -45,6 +45,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install git -y -q
 
 # Install RaspAp
 echo -e "${CYAN}Installing Raspap...$NC"
-wget -q https://git.io/voEUQ -O /tmp/raspap && echo "y\ny\nn\n" | sudo bash /tmp/raspap
+wget -q https://git.io/voEUQ -O /tmp/raspap && printf "y\ny\nn\n" | sudo bash /tmp/raspap
 
 echo -e "------------------------------------------------------------------\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
