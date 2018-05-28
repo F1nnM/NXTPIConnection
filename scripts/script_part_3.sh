@@ -89,7 +89,7 @@ sudo mv /tmp/Info18Web/info2/* /var/www/html/
 
 # Install phpmyadmin
 echo -e "${CYAN}Installing phpmyadmin...$NC"
-sudo export DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND=noninteractive
 sudo sh -c "echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections"
 sudo sh -c "echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect lighttpd' | debconf-set-selections"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install phpmyadmin -y -q
