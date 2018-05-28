@@ -22,7 +22,7 @@ The Output can be seen with the display_log script:
 
 #### To see the output of the second part script, just type (in pi's home directory):
 ```sh
-$ bash display_log
+$ bash /NXTPi/display_log
 ```
 
 ## License
