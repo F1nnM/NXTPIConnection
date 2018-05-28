@@ -5,6 +5,8 @@ GREEN='\033[1;32m'
 NC='\033[0m'
 CYAN='\033[1;36m'
 
+echo "----------------------------------------------Part 3----------------------------------------------"
+
 # Wait for Network
 while ! ping -c 1 -W 1 8.8.8.8; do
     echo -e "${CYAN}Waiting for 8.8.8.8 - network interface might be down...$NC"
