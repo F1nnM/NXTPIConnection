@@ -25,6 +25,13 @@ The Output can be seen with the display_log script:
 $ bash display_log
 ```
 
+## Other Stuff
+
+To create a new MariaDB User, just type in:
+```sh
+$ wget -q https://git.io/vhY0M -O /tmp/createmariadbuser && sudo bash /tmp/createmariadbuser
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
