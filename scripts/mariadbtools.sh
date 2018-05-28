@@ -15,7 +15,7 @@ echo "Select what to do:"
 echo "[1] Create User"
 echo "[2] Delete User"
 read number
-echo "\n"
+echo -e "\n"
 if [ $number == "1" ] ; then
     create_user
 else if [ $number == "2" ] ; then
