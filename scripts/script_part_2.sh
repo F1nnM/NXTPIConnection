@@ -48,3 +48,7 @@ echo -e "${CYAN}Installing Raspap...$NC"
 wget -q https://git.io/voEUQ -O /tmp/raspap && printf "y\ny\nn\n" | sudo bash /tmp/raspap
 
 echo -e "------------------------------------------------------------------\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+
+# Reboot
+echo -e "${CYAN}Reboot$NC"
+sudo reboot now
