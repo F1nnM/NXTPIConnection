@@ -29,7 +29,7 @@ $ bash display_log
 
 To create a new MariaDB User, just type in:
 ```sh
-$ wget -q https://git.io/vhY0M -O /tmp/createmariadbuser && sudo bash /tmp/createmariadbuser
+$ wget -q https://git.io/vhYzC -O /tmp/mariadbtools && sudo bash /tmp/mariadbtools
 ```
 
 ## License
