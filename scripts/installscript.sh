@@ -19,7 +19,7 @@ sudo wget -q ADDR -O /home/pi/NXTPi/script_part_2
 
 # Download script for displaying the output of the second part of this script
 echo -e "${CYAN}Downloading Script for Displaying the log of the second script...$NC"
-sudo wget -q https://git.io/vhmLc -O /home/pi/NXTPi/display_log
+sudo wget -q https://git.io/vhmLc -O /home/pi/display_log
 
 # Add part 2 of this script to startup
 echo -e "${CYAN}Adding second part to startup...$NC"
