@@ -11,7 +11,7 @@
 
 #### Install from shell prompt:
 ```sh
-$ sudo wget -q https://git.io/vpNMY -O /tmp/installer && bash /tmp/installer
+$ sudo wget -q https://git.io/vpNMY -O /tmp/installer && sudo bash /tmp/installer
 ```
 
 The script then will automatically download the second part of the script.
