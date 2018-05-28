@@ -18,6 +18,7 @@ then
                 echo "Deleting all installation files..."
                 sudo rm -R -v /home/pi/NXTPi
                 sudo rm -R -v /home/pi/Dexter
+                sudo rm -v /home/pi/display_log
         fi
 else
         # Output the log file
