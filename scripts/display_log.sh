@@ -1,11 +1,11 @@
 #!/bin/bash/
 
 # Check if installation is done
-File=installscript_out.log
+File=/home/pi/NXTPi/installscript_out.log
 if grep -q Instinfo:DONE. "$File";
 then
         # Output the log file
-        echo -e "$(cat /home/pi/installscript_out.log)"
+        echo -e "$(cat /home/pi/NXTPi/installscript_out.log)"
         echo -e "\n\n\n\n"
 
         # Ask for deleting the installation files
@@ -21,8 +21,8 @@ then
         fi
 else
         # Output the log file
-        echo -e "$(cat /home/pi/installscript_out.log)"
+        echo -e "$(cat /home/pi/NXTPi/installscript_out.log)"
         
         # Send the current status to the User
-        tail -n0 -f installscript_out.log
+        tail -n0 -f /home/pi/NXTPi/installscript_out.log
 fi
