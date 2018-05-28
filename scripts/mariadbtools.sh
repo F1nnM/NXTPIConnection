@@ -5,27 +5,29 @@ GREEN='\033[1;32m'
 NC='\033[0m'
 RED='\033[1;31m'
 
-if ! hash mariadb 2>/dev/null; then
-    echo -e "${RED}MariaDB seems to be not installed. Please install MariaDB to use this Script.$NC"
-    echo "exit."
-    exit 1
-fi
+function main(){
+    if ! hash mariadb 2>/dev/null; then
+        echo -e "${RED}MariaDB seems to be not installed. Please install MariaDB to use this Script.$NC"
+        echo "exit."
+        exit 1
+    fi
 
-echo "Select what to do:"
-echo "[1] Create User"
-echo "[2] Delete User"
-read number
-echo -e "\n"
-if [ $number == "1" ] ; then
-    create_user
-else if [ $number == "2" ] ; then
-    delete_user
-else
-    echo -e "${RED}Wrong Arguments! Type in 1 or 2!$NC"
-    exit 1
-fi
+    echo "Select what to do:"
+    echo "[1] Create User"
+    echo "[2] Delete User"
+    read number
+    echo -e "\n"
+    if [ $number == "1" ] ; then
+        create_user
+    else if [ $number == "2" ] ; then
+        delete_user
+    else
+        echo -e "${RED}Wrong Arguments! Type in 1 or 2!$NC"
+        exit 1
+    fi
 
-bye
+    bye
+}
 
 function create_user(){
     echo "Enter Username of new User: "
@@ -62,3 +64,5 @@ function bye(){
     echo -e "${GREEN}Done.$NC"
     echo "Bye."
 }
+
+main
