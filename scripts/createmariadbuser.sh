@@ -29,4 +29,5 @@ fi
 
 sudo mariadb -e "FLUSH PRIVILEGES;"
 
-echo -e "${GREEN}Done. Bye.$NC"
+echo -e "${GREEN}Done.$NC"
+echo "Bye."
