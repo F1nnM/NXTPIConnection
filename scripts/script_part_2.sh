@@ -17,7 +17,7 @@ sudo crontab -l | grep -v "@reboot bash /home/pi/NXTPi/script_part_2 >> /home/pi
 
 # Download part 3 of this script
 echo -e "${CYAN}Downloading third part of this script...$NC"
-sudo wget -q ADDR -O /home/pi/NXTPi/script_part_3
+sudo wget -q https://git.io/vhYnH -O /home/pi/NXTPi/script_part_3
 
 # Add part 3 of this script to startup
 echo -e "${CYAN}Adding third part to startup...$NC"
