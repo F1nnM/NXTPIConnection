@@ -9,42 +9,26 @@ CYAN='\033[1;36m'
 echo -e "${CYAN}Expanding Filesystem...$NC"
 sudo raspi-config nonint do_expand_rootfs
 
+# Create Folder for Installation
+echo -e "${CYAN}Creating Folder for installation...$NC"
+sudo mkdir /home/pi/NXTPi/
+
 # Download part 2 of this script
 echo -e "${CYAN}Downloading second part of this script...$NC"
-sudo wget -q ADDR -O /home/pi/script_part_2
+sudo wget -q ADDR -O /home/pi/NXTPi/script_part_2
 
 # Download script for displaying the output of the second part of this script
 echo -e "${CYAN}Downloading Script for Displaying the log of the second script...$NC"
-sudo wget -q https://git.io/vhmLc -O /home/pi/display_log
+sudo wget -q https://git.io/vhmLc -O /home/pi/NXTPi/display_log
 
 # Add part 2 of this script to startup
 echo -e "${CYAN}Adding second part to startup...$NC"
-(crontab -l ; echo "@reboot bash /home/pi/script_part_2 >> /home/pi/installscript_out.log 2>&1") | crontab -
+(crontab -l ; echo "@reboot bash /home/pi/NXTPi/script_part_2 >> /home/pi/NXTPi/installscript_out.log 2>&1") | crontab -
 echo -e "${GREEN}Succesfully added the second part of this script to startup!$NC"
 echo -e "${CYAN}Active Cron Jobs:$NC"
 crontab -l
 echo -e "\n"
 
-# Update
-echo -e "${CYAN}Updating sources...$NC"
-sudo apt update
-
-# Upgrade
-echo -e "${CYAN}Upgrading...$NC"
-sudo apt upgrade -y
-
-# Remove unnecessary Packages
-echo -e "${CYAN}Running apt-autoremove...$NC"
-sudo apt autoremove -y
-
-# Install Git
-echo -e "${CYAN}Installing Git...$NC"
-sudo apt install git -y
-
-# Install RaspAp
-echo -e "${CYAN}Installing Raspap...$NC"
-wget -q https://git.io/voEUQ -O /tmp/raspap && yes y | sudo bash /tmp/raspap
-
-# Reboot, if RaspAp Installation Reboot not fires
+# Reboot
 echo -e "${CYAN}Reboot.$NC"
 sudo reboot now
