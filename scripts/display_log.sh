@@ -6,10 +6,19 @@ if grep -q Instinfo:DONE. "$File";
 then
         # Output the log file
         echo -e "$(cat /home/pi/installscript_out.log)"
-        
-        # Delete files
-        sudo rm /home/pi/display_log
-        sudo rm /home/pi/installscript_out.log
+        echo -e "\n\n\n\n"
+
+        # Ask for deleting the installation files
+        echo -e "The Installation is completed, delete all installation Files? [y/N]: "
+        read answer
+        declare -l answer
+        answer=$answer
+        if [ $answer == "y" ] || [ $answer == "yes" ] ; then
+                # Delete files
+                echo "Deleting all installation files..."
+                sudo rm -R -v /home/pi/NXTPi
+                sudo rm -R -v /home/pi/Dexter
+        fi
 else
         # Output the log file
         echo -e "$(cat /home/pi/installscript_out.log)"
