@@ -13,7 +13,7 @@ done
 
 # Remove this script from startup
 echo -e "${CYAN}Removing this script from startup...$NC"
-sudo crontab -l | grep -v "@reboot bash /home/pi/script_part_3 >> /home/pi/installscript_out.log 2>&1" | crontab -
+sudo crontab -l | grep -v "@reboot bash /home/pi/NXTPi/script_part_3 >> /home/pi/NXTPi/installscript_out.log 2>&1" | crontab -
 
 # Create Directory for RaspAp
 echo -e "${CYAN}Creating Directory for RaspAp...$NC"
@@ -103,10 +103,6 @@ sudo apt-get install phpmyadmin -y
 # Install Java
 echo -e "${CYAN}Installing Java...$NC"
 sudo apt-get install oracle-java8-jdk -y
-
-# Delete everything
-echo -e "${CYAN}Deleting this script...$NC"
-sudo rm /home/pi/script_part_2
 
 # Mark Installation as Done
 echo "Instinfo:DONE."
