@@ -7,7 +7,7 @@ CYAN='\033[1;36m'
 
 # Download part 2 of this script
 echo -e "${CYAN}Downloading second part of this script...$NC"
-sudo wget -q https://git.io/vpNyW -O /home/pi/script_part_2
+sudo wget -q ADDR -O /home/pi/script_part_2
 
 # Download script for displaying the output of the second part of this script
 echo -e "${CYAN}Downloading Script for Displaying the log of the second script...$NC"
