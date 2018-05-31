@@ -20,7 +20,7 @@ After the first reboot, the output of the installation will be sent into a log f
 
 The Output can be seen with the display_log script:
 
-#### To see the output of the second part script, just type (in pi's home directory):
+#### To see the output of the second and third part of the script, just type (in pi's home directory):
 ```sh
 $ bash display_log
 ```
