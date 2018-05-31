@@ -1,7 +1,7 @@
 # NXTPIConnection
 
 ## Requirements
-* [Java Version 1.8+](https://java.com/en/download/)
+* A Raspberry Pi Model 3 running Raspbian
 
 ## Useful Links
 * [RaspAp](https://github.com/billz/raspap-webgui)
