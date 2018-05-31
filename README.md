@@ -1,7 +1,7 @@
 # NXTPIConnection
 
 ## Requirements
-* A Raspberry Pi Model 3 running Raspbian
+* A Raspberry Pi Model 3 running [Raspbian Stretch with Desktop](https://downloads.raspberrypi.org/raspbian_latest). [(Torrent Download)](https://downloads.raspberrypi.org/raspbian_latest.torrent)
 
 ## Useful Links
 * [RaspAp](https://github.com/billz/raspap-webgui)
