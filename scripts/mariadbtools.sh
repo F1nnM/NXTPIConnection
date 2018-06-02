@@ -54,7 +54,7 @@ function main() {
     echo -e "\n"
     if [ $number == "1" ] ; then
         create_user
-    else if [ $number == "2" ] ; then
+    elif [ $number == "2" ] ; then
         delete_user
     else
         echo -e "${RED}Wrong Arguments! Type in 1 or 2!$NC"
