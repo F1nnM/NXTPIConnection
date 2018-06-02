@@ -16,7 +16,7 @@ function create_user() {
     read answer
     declare -l answer
     answer=$answer
-    if [ $answer = "y" ] || [ $answer = "yes" ] ; then
+    if [[ $answer = "y" ]] || [[ $answer = "yes" ]] ; then
         sudo mariadb -e "GRANT ALL PRIVILEGES ON *.* TO '$Username'@'localhost' WITH GRANT OPTION;"
     fi
 
