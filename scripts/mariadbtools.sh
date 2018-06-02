@@ -35,6 +35,7 @@ function delete_user() {
 }
 
 function bye() {
+    echo -e "\n"
     echo -e "${GREEN}Done.$NC"
     echo "Bye."
 }
