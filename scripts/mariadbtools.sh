@@ -27,11 +27,7 @@ function delete_user() {
     echo "Enter Username to delete:"
     read Username
 
-    sudo mariadb -e "EXEC sp_MSForEachDB 'USE [?]; IF  EXISTS (SELECT * FROM sys.schemas WHERE name = N''$Username'') DROP SCHEMA [$Username]; '"
-    
-    sudo mariadb -e "EXEC sp_MSForEachDB 'USE [?]; IF  EXISTS (SELECT * FROM sys.database_principals WHERE name = N''EU\USUBOLS'') DROP USER [$Username]; '"
-
-    sudo mariadb -e "IF  EXISTS (SELECT * FROM sys.server_principals WHERE name = N'$Username') DROP LOGIN [$Username];"
+    sudo mariadb -e "DROP USER IF EXISTS $Username;"
 }
 
 function bye() {
