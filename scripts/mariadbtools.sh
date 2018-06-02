@@ -49,7 +49,7 @@ function main() {
 
     retry=true
 
-    while [ retry ] ; do
+    while $retry ; do
         retry=false
         echo "Select what to do:"
         echo "[1] Create User"
