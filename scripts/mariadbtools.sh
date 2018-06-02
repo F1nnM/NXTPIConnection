@@ -42,7 +42,7 @@ function bye() {
 
 function main() {
 
-    PKG_OK=$(dpkg-query -W --showformat='${Status}\n' the.package.name|grep "install ok installed")
+    PKG_OK=$(dpkg-query -W --showformat='${Status}\n' mariadb-server|grep "install ok installed")
 
     if [ "" == "$PKG_OK" ] ; then
         echo -e "${RED}MariaDB seems to be not installed. Please install MariaDB to use this Script.$NC"
