@@ -47,7 +47,7 @@ function main() {
         exit 1
     fi
 
-    retry=false
+    retry=true
 
     while [ retry ] ; do
         retry=false
