@@ -47,6 +47,8 @@ function main() {
         exit 1
     fi
 
+    retry=false
+
     while [ retry ] ; do
         retry=false
         echo "Select what to do:"
