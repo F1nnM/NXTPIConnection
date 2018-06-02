@@ -57,7 +57,8 @@ function main() {
     elif [ $number == "2" ] ; then
         delete_user
     else
-        echo -e "${RED}Wrong Arguments! Type in 1 or 2!$NC"
+        echo -e "${RED}Illegal Arguments! Type in 1 or 2!$NC"
+        echo "exit."
         exit 1
     fi
 
