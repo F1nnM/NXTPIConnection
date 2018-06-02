@@ -27,7 +27,11 @@ function delete_user() {
     echo "Enter Username to delete:"
     read Username
 
-    sudo mariadb -e "DROP USER IF EXISTS $Username;"
+    sudo mariadb -e "REVOKE ALL PRIVILEGES, GRANT OPTION FROM '$Username'@'localhost';"
+    
+    sudo mariadb -e "DROP USER '$Username'@'localhost';"
+    
+    sudo mariadb -e "FLUSH PRIVILEGES;"
 }
 
 function bye() {
