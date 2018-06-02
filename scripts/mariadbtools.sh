@@ -41,7 +41,7 @@ function bye() {
 }
 
 function main() {
-    if [ ! hash mariadb 2>/dev/null ] ;
+    if [ ! hash mariadb-server 2>/dev/null ] ;
         then
         echo -e "${RED}MariaDB seems to be not installed. Please install MariaDB to use this Script.$NC"
         echo "exit."
