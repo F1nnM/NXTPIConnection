@@ -47,20 +47,23 @@ function main() {
         exit 1
     fi
 
-    echo "Select what to do:"
-    echo "[1] Create User"
-    echo "[2] Delete User"
-    read number
-    echo -e "\n"
-    if [ $number == "1" ] ; then
-        create_user
-    elif [ $number == "2" ] ; then
-        delete_user
-    else
-        echo -e "${RED}Illegal Arguments! Type in 1 or 2!$NC"
-        echo "exit."
-        exit 1
-    fi
+    while [ retry ] ; do
+        retry=false
+        echo "Select what to do:"
+        echo "[1] Create User"
+        echo "[2] Delete User"
+        read number
+        echo -e "\n"
+        if [ $number == "1" ] ; then
+            create_user
+        elif [ $number == "2" ] ; then
+            delete_user
+        else
+            echo -e "${RED}Illegal Arguments! Type in 1 or 2!$NC"
+            echo -e "\n"
+            retry=true
+        fi
+    done
 
     bye
 }
