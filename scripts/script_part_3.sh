@@ -37,6 +37,10 @@ sudo git clone https://github.com/gumslone/GumCP.git /var/www/html/admin/
 echo -e "${CYAN}Installing libusb-dev...$NC"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install libusb-dev -y -q
 
+# Install ant
+echo -e "${CYAN}Installing Ant...NC"
+sudo DEBIAN_FRONTEND=noninteractive apt-get install ant -y -q
+
 # Download leJos lib
 echo -e "${CYAN}Downloading leJos library...$NC"
 wget https://netix.dl.sourceforge.net/project/nxt.lejos.p/0.9.1beta-3/leJOS_NXJ_0.9.1beta-3.tar.gz -P /tmp/
@@ -50,7 +54,7 @@ echo -e "${CYAN}Running Ant build...$NC"
 sudo ant -buildfile /tmp/leJOS_NXJ_0.9.1beta-3/build/
 
 # Create dir for driver
-echo -e "${CYAN}Creating directory for driver..."
+echo -e "${CYAN}Creating directory for driver...$NC"
 sudo mkdir /home/pi/NXTPi/native
 
 # Move usb driver
