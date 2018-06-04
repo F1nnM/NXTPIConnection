@@ -33,6 +33,30 @@ sudo mkdir /var/www/html/admin
 echo -e "${CYAN}Cloning GumCP...$NC"
 sudo git clone https://github.com/gumslone/GumCP.git /var/www/html/admin/
 
+# Install libusb-dev
+echo -e "${CYAN}Installing libusb-dev...$NC"
+sudo DEBIAN_FRONTEND=noninteractive apt-get install libusb-dev -y -q
+
+# Download leJos lib
+echo -e "${CYAN}Downloading leJos library...$NC"
+wget https://netix.dl.sourceforge.net/project/nxt.lejos.p/0.9.1beta-3/leJOS_NXJ_0.9.1beta-3.tar.gz -P /tmp/
+
+# Unzip the leJos lib
+echo -e "${CYAN}Unzipping leJos library...$NC"
+sudo tar xzf /tmp/leJOS_NXJ_0.9.1beta-3.tar.gz
+
+# Run ant build
+echo -e "${CYAN}Running Ant build...$NC"
+sudo ant -buildfile /tmp/leJOS_NXJ_0.9.1beta-3/build/
+
+# Create dir for driver
+echo -e "${CYAN}Creating directory for driver..."
+sudo mkdir /home/pi/NXTPi/native
+
+# Move usb driver
+echo -e "${CYAN}Moving USB-Driver to /home/pi/NXTPi/native...$NC"
+sudo mv /tmp/leJOS_NXJ_0.9.1beta-3/lib/pc/native/linux/arm/libjlibnxt.so /home/pi/NXTPi/native
+
 # Install PHP 7.0 and mariadb
 echo -e "${CYAN}Installing PHP 7.0 and mariadb...$NC"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.0-fpm php7.0 php-ssh2 php-cgi mariadb-server mariadb-client -y -q
