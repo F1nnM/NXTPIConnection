@@ -47,7 +47,7 @@ wget https://netix.dl.sourceforge.net/project/nxt.lejos.p/0.9.1beta-3/leJOS_NXJ_
 
 # Unzip the leJos lib
 echo -e "${CYAN}Unzipping leJos library...$NC"
-sudo tar xzf /tmp/leJOS_NXJ_0.9.1beta-3.tar.gz
+sudo tar xzf /tmp/leJOS_NXJ_0.9.1beta-3.tar.gz -C /tmp/
 
 # Run ant build
 echo -e "${CYAN}Running Ant build...$NC"
