@@ -15,15 +15,15 @@ done
 
 # Remove this script from startup
 echo -e "${CYAN}Removing this script from startup...$NC"
-sudo crontab -l | grep -v "@reboot bash /home/pi/NXTPi/script_part_2 >> /home/pi/NXTPi/installscript_out.log 2>&1" | crontab -
+sudo crontab -l | grep -v "@reboot bash /home/pi/NXTPi/install/script_part_2 >> /home/pi/NXTPi/install/installscript_out.log 2>&1" | crontab -
 
 # Download part 3 of this script
 echo -e "${CYAN}Downloading third part of this script...$NC"
-sudo wget -q https://git.io/vhYnH -O /home/pi/NXTPi/script_part_3
+sudo wget -q https://git.io/vhYnH -O /home/pi/NXTPi/install/script_part_3
 
 # Add part 3 of this script to startup
 echo -e "${CYAN}Adding third part to startup...$NC"
-(crontab -l ; echo "@reboot bash /home/pi/NXTPi/script_part_3 >> /home/pi/NXTPi/installscript_out.log 2>&1") | crontab -
+(crontab -l ; echo "@reboot bash /home/pi/NXTPi/install/script_part_3 >> /home/pi/NXTPi/install/installscript_out.log 2>&1") | crontab -
 echo -e "${GREEN}Succesfully added the third part of this script to startup!$NC"
 echo -e "${CYAN}Active Cron Jobs:$NC"
 crontab -l
