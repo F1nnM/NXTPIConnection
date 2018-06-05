@@ -56,7 +56,7 @@ sudo ant -buildfile /opt/leJOS_NXJ_0.9.1beta-3/build/
 # Add NXJ_HOME to PATH
 echo -e "${CYAN}Adding NXJ_HOME to PATH...
 sudo sh -c 'echo "NXJ_HOME=\"/opt/leJOS_NXJ_0.9.1beta-3\"" >> /home/pi/.profile'
-sudo sh -c 'echo "PATH=$NXJ_HOME/bin:$PATH" >> /home/pi/.profile'
+sudo sh -c 'echo "PATH=\$NXJ_HOME/bin:\$PATH" >> /home/pi/.profile'
 
 # Create dir for driver
 echo -e "${CYAN}Creating directory for driver...$NC"
