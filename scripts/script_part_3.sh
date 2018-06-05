@@ -54,9 +54,29 @@ echo -e "${CYAN}Running Ant build...$NC"
 sudo ant -buildfile /opt/leJOS_NXJ_0.9.1beta-3/build/
 
 # Add NXJ_HOME to PATH
-echo -e "${CYAN}Adding NXJ_HOME to PATH...
+echo -e "${CYAN}Adding NXJ_HOME to PATH...$NC"
 sudo sh -c 'echo "NXJ_HOME=\"/opt/leJOS_NXJ_0.9.1beta-3\"" >> /home/pi/.profile'
 sudo sh -c 'echo "PATH=\$NXJ_HOME/bin:\$PATH" >> /home/pi/.profile'
+
+# Add new group 'lego'
+echo -e "${CYAN}Adding new Group 'lego' and assining user 'pi' to it...$NC"
+sudo groupadd lego
+sudo gpasswd -a pi lego
+
+# Create new udev rules
+echo -e "${CYAN}Creating new udev rules, to allow the group 'lego' to access the NXT Brick...$NC"
+sudo sh -c 'echo "# Lego NXT brick in normal mode" >> /etc/udev/rules.d/70-lego.rules'
+sudo sh -c 'echo "SUBSYSTEM==\"usb\", DRIVER==\"usb\", ATTRS{idVendor}==\"0694\", ATTRS{idProduct}==\"0002\", GROUP=\"lego\", MODE=\"0660\"" >> /etc/udev/rules.d/70-lego.rules'
+sudo sh -c 'echo "# Lego NXT brick in firmware update mode (Atmel SAM-BA mode)" >> /etc/udev/rules.d/70-lego.rules'
+sudo sh -c 'echo "SUBSYSTEM==\"usb\", DRIVER==\"usb\", ATTRS{idVendor}==\"03eb\", ATTRS{idProduct}==\"6124\", GROUP=\"lego\", MODE=\"0660\"" >> /etc/udev/rules.d/70-lego.rules'
+
+# Create dir for Java Script & Download Script
+echo -e "${CYAN}Downloading & Installing Script for running leJos pc projects...$NC"
+sudo mkdir /opt/NXTPi/
+sudo wget -q URL -O /opt/NXTPi/nxtpi
+sudo chmod +x /opt/NXTPi/nxtpi
+sudo sh -c 'echo "\n" >> /home/pi/.profile'
+sudo sh -c 'echo "export PATH=\$PATH\":/opt/NXTPi\"" >> /home/pi/.profile'
 
 # Create dir for driver
 echo -e "${CYAN}Creating directory for driver...$NC"
