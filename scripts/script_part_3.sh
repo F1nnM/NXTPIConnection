@@ -73,9 +73,9 @@ sudo sh -c 'echo "SUBSYSTEM==\"usb\", DRIVER==\"usb\", ATTRS{idVendor}==\"03eb\"
 # Create dir for Java Script & Download Script
 echo -e "${CYAN}Downloading & Installing Script for running leJos pc projects...$NC"
 sudo mkdir /opt/NXTPi/
-sudo wget -q URL -O /opt/NXTPi/nxtpi
+sudo wget -q https://git.io/vhBhw -O /opt/NXTPi/nxtpi
 sudo chmod +x /opt/NXTPi/nxtpi
-sudo sh -c 'echo "\n" >> /home/pi/.profile'
+sudo sh -c 'echo -e "\n" >> /home/pi/.profile'
 sudo sh -c 'echo "export PATH=\$PATH\":/opt/NXTPi\"" >> /home/pi/.profile'
 
 # Create dir for driver
