@@ -6,7 +6,7 @@ function main() {
         if [[ ${filename: -4} == ".jar" ]] ; then
             mainclassmf=$(unzip -c $filename META-INF/MANIFEST.MF | grep Main-Class)
             mainclass=$(cut -d' ' -f2 <<< $mainclassmf)
-            mainclass=$(sed -e "s/[^.a-zA-Z]//g" <<< $mainclass)
+            mainclass=$(sed -e "s/[^.a-zA-ZäÄüÜöÖ0-9_$]//g" <<< $mainclass)
             echo "Path to main class: $mainclass"
             sudo java -d32 -cp "$filename:/opt/leJOS_NXJ_0.9.1beta-3/lib/pc/*" $mainclass
         else
