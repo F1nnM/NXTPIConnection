@@ -4,18 +4,13 @@ import java.util.ArrayList;
 
 import listener.ButtonListener;
 
-public class Button {
-
-	public static final Button ENTER = new Button("ENTER");
-	public static final Button LEFT = new Button("LEFT");
-	public static final Button RIGHT = new Button("RIGHT");
-	public static final Button ESCAPE = new Button("RIGHT");
+public class NXTButton {
 
 	private static ArrayList<ButtonListener> listeners = new ArrayList<>();
 	
 	private String name;
 	
-	private Button(String name) {
+	public NXTButton(String name) {
 		this.name = name;
 	}
 	

@@ -1,14 +1,21 @@
 package datatype;
 
 import nxt.Connection;
+import nxt.NXT;
 
 public class LCD {
 
-	public static void drawString(String toDraw, int x, int y) {
-		Connection.enqueue(NXTMessage.drawLCD(toDraw, x, y));
+	private Connection connection;
+	
+	public LCD(NXT nxt) {
+		this.connection = nxt.getConnection();
 	}
 	
-	public static void clear() {
-		Connection.enqueue(NXTMessage.clearLCD);
+	public void drawString(String toDraw, int x, int y) {
+		connection.enqueue(NXTMessage.drawLCD(toDraw, x, y));
+	}
+	
+	public void clear() {
+		connection.enqueue(NXTMessage.clearLCD);
 	}
 }

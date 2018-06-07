@@ -1,7 +1,8 @@
 package nxt;
 
 import java.util.ArrayList;
-import datatype.NXTMessage;
+
+import datatype.*;
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTCommFactory;
@@ -9,16 +10,42 @@ import lejos.pc.comm.NXTInfo;
 import listener.NewMessageListener;
 
 public class NXT {
-
+	
+	private Motors motors;
+	private Buttons buttons;
+	
+	private Connection connection;
+	private LCD lcd;
 	private NXTComm nxtComm;
 	private ArrayList<NewMessageListener> listeners = new ArrayList<>();
 
 	public NXT() {
+		buttons = new Buttons();
+		motors = new Motors(this);
+		connection = new Connection();
+		lcd = new LCD(this);
+		
 		try {
 			nxtComm = NXTCommFactory.createNXTComm(NXTCommFactory.USB);
 		} catch (NXTCommException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Motors getMotors() {
+		return motors;
+	}
+	
+	public Buttons getButtons() {
+		return buttons;
+	}
+	
+	public Connection getConnection() {
+		return connection;
+	}
+	
+	public LCD getLCD() {
+		return lcd;
 	}
 
 	public void connect(String name, int delay) {
@@ -28,12 +55,12 @@ public class NXT {
 				System.exit(1);
 			}
 		} catch (NXTCommException e) {
-			Connection.disconnect();
+			connection.disconnect();
 			e.printStackTrace();
 			System.exit(1);
 		}
 
-		Connection.conn(delay, nxtComm, this);
+		connection.conn(delay, nxtComm, this);
 	}
 
 	public void connect(NXTInfo nxtInfo, int delay) {
@@ -43,12 +70,12 @@ public class NXT {
 				System.exit(1);
 			}
 		} catch (NXTCommException e) {
-			Connection.disconnect();
+			connection.disconnect();
 			e.printStackTrace();
 			System.exit(1);
 		}
 
-		Connection.conn(delay, nxtComm, this);
+		connection.conn(delay, nxtComm, this);
 	}
 
 	public void addListener(NewMessageListener listener) {

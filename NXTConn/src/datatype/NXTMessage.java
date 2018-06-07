@@ -6,11 +6,18 @@ package datatype;
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class NXTMessage {
 
-    public static NXTMessage ok = new NXTMessage("ok");
-    public static NXTMessage done = new NXTMessage("done");
-    public static NXTMessage clearLCD = new NXTMessage("clear");
-    public static NXTMessage flt = new NXTMessage("flt");
-    public static NXTMessage isMoving = new NXTMessage("isMoving");
+    public static final NXTMessage ok = new NXTMessage("ok");
+    public static final NXTMessage done = new NXTMessage("done");
+    public static final NXTMessage clearLCD = new NXTMessage("clear");
+    public static final NXTMessage flt = new NXTMessage("flt");
+    public static final NXTMessage isMoving = new NXTMessage("isMoving");
+    public static final NXTMessage buttonReleased = new NXTMessage("buttonReleased");
+    public static final NXTMessage buttonPressed = new NXTMessage("buttonPressed");
+    public static final NXTMessage getTachoCount = new NXTMessage("getTachoCount");
+    public static final NXTMessage resetTachoCount= new NXTMessage("resetTachoCount");
+    public static final NXTMessage drawLCD = new NXTMessage("drawLCD");
+    public static final NXTMessage setSpeed = new NXTMessage("setSpeed");
+    public static final NXTMessage rotate = new NXTMessage("rotate");
     
     private String message;
     private String[] values;
@@ -51,41 +58,41 @@ public class NXTMessage {
         }
     }
     
-    public static NXTMessage buttonReleased(Button button) {
-    	return new NXTMessage("buttonReleased", "Button." + button.getName());
+    public static NXTMessage buttonReleased(NXTButton button) {
+    	return new NXTMessage("buttonReleased", button.getName());
     }
     
-    public static NXTMessage buttonPressed(Button button) {
-    	return new NXTMessage("buttonPressed", "Button." + button.getName());
+    public static NXTMessage buttonPressed(NXTButton button) {
+    	return new NXTMessage("buttonPressed", button.getName());
     }
     
-    public static NXTMessage getTachoCount(Motor motor) {
-    	return new NXTMessage("getTachoCount", "Motor." + motor.getNumber());
+    public static NXTMessage getTachoCount(NXTMotor motor) {
+    	return new NXTMessage("getTachoCount", motor.getNumber());
     }
     
-    public static NXTMessage resetTachoCount(Motor motor) {
-    	return new NXTMessage("resetTachoCount", "Motor." + motor.getNumber());
-    }
-    
-    public static NXTMessage buttonPressed(String buttonNumber) {
-    	return new NXTMessage("buttonPressed", buttonNumber);
-    }
-    
-    public static NXTMessage buttonReleased(String buttonNumber) {
-    	return new NXTMessage("buttonReleased", buttonNumber);
+    public static NXTMessage resetTachoCount(NXTMotor motor) {
+    	return new NXTMessage("resetTachoCount", motor.getNumber());
     }
     
     public static NXTMessage drawLCD(String toDraw, int x, int y) {
     	return new NXTMessage("draw", toDraw + "." + x + "." + y);
     }
     
-    public static NXTMessage setSpeed(float speed, Motor motor) {
-        return new NXTMessage("setSpeed", String.valueOf(speed));
+    public static NXTMessage setSpeed(float speed, NXTMotor motor) {
+        return new NXTMessage("setSpeed", String.valueOf(speed), motor.getNumber());
     }
 	
-	public static NXTMessage rotate(int angle, Motor motor){
-        return new NXTMessage("rotate", angle + "");
+	public static NXTMessage rotate(int angle, NXTMotor motor){
+        return new NXTMessage("rotate", angle + "", motor.getNumber());
     }
+	
+	public static NXTMessage flt(NXTMotor motor) {
+		return new NXTMessage("flt", motor.getNumber());
+	}
+	
+	public static NXTMessage isMoving(NXTMotor motor) {
+		return new NXTMessage("isMoving", motor.getNumber());
+	}
 
     /**
      * @return the message of the NXTMessage
