@@ -17,17 +17,17 @@ import main.Logger;
 
 public class Connection {
 	
-	private static DataInputStream in;
-	private static DataOutputStream out;
-	private static ScheduledExecutorService Timer;
-	private static NXTComm nxtComm;
-	private static NXT nxt;
-	private static StringBuilder queue = new StringBuilder();
-	private static HashMap<NXTMessage, RequestListener> requests = new HashMap<>();
+	private DataInputStream in;
+	private DataOutputStream out;
+	private ScheduledExecutorService Timer;
+	private NXTComm nxtComm;
+	private NXT nxt;
+	private StringBuilder queue = new StringBuilder();
+	private HashMap<NXTMessage, RequestListener> requests = new HashMap<>();
 	
-	protected static void conn(int delay, NXTComm nxtComm, NXT nxt) {
-		Connection.nxt = nxt;
-		Connection.nxtComm = nxtComm;
+	protected void conn(int delay, NXTComm nxtComm, NXT nxt) {
+		this.nxt = nxt;
+		this.nxtComm = nxtComm;
 		in = new DataInputStream(nxtComm.getInputStream());
 		out = new DataOutputStream(nxtComm.getOutputStream());
 		
@@ -41,7 +41,7 @@ public class Connection {
 		}, getCalendar().getTime().getTime() - Calendar.getInstance().getTimeInMillis() - 2, 10, TimeUnit.MILLISECONDS);
 	}
 	
-	public static void addRequest(NXTMessage nxtMessage, RequestListener listener) {
+	public void addRequest(NXTMessage nxtMessage, RequestListener listener) {
 		requests.put(nxtMessage, listener);
 	}
 	
@@ -53,11 +53,11 @@ public class Connection {
 		}
 	}
 
-	public static void enqueue(NXTMessage nxtMessage) {
+	public void enqueue(NXTMessage nxtMessage) {
 		queue.append(nxtMessage.toString()).append(":");
 	}
 	
-	private static void send() {
+	private void send() {
 		if(queue.length() != 0) {
 			try {
 				out.writeUTF(queue.toString());
@@ -68,7 +68,7 @@ public class Connection {
 		}
 	}
 	
-	private static void receive() {
+	private void receive() {
 		try {
 			if(in.available() > 0) {
 				ArrayList<NXTMessage> messages = new ArrayList<>();
@@ -82,7 +82,7 @@ public class Connection {
 		}
 	}
 	
-	public static Calendar getCalendar() {
+	public Calendar getCalendar() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
 		calendar.set(Calendar.MINUTE, Calendar.getInstance().get(Calendar.MINUTE));
@@ -91,7 +91,7 @@ public class Connection {
 		return calendar;
 	}
 
-	public static void disconnect() {
+	public void disconnect() {
 		try {
 			out.writeUTF("bye");
 		} catch (IOException e) {

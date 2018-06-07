@@ -6,15 +6,13 @@ import java.util.List;
 import listener.RequestListener;
 import nxt.Connection;
 
-public class Motor {
-
-	public static final Motor A = new Motor("A");
-	public static final Motor B = new Motor("B");
-	public static final Motor C = new Motor("C");
-
+public class NXTMotor {
+	
 	private String number;
-
-	private Motor(String number) {
+	private Connection connection;
+	
+	protected NXTMotor(String number, Connection connection) {
+		this.connection = connection;
 		this.number = number;
 	}
 	
@@ -23,13 +21,13 @@ public class Motor {
 	}
 
 	public void setSpeed(float speed) {
-		Connection.enqueue(NXTMessage.setSpeed(speed, this));
+		connection.enqueue(NXTMessage.setSpeed(speed, this));
 		
 	}
 
 	public int getTachoCount() {
 		final List<Integer> answer = new ArrayList<>();   
-		Connection.addRequest(NXTMessage.getTachoCount(this), new RequestListener() {
+		connection.addRequest(NXTMessage.getTachoCount(this), new RequestListener() {
 			@Override
 			public void AnswerArrived(String reply) {
 				answer.add(Integer.parseInt(reply));
@@ -39,20 +37,20 @@ public class Motor {
 	}
 
 	public void resetTachoCount() {
-		Connection.enqueue(NXTMessage.resetTachoCount(this));
+		connection.enqueue(NXTMessage.resetTachoCount(this));
 	}
 
 	public void rotate(int angle) {
-		Connection.enqueue(NXTMessage.rotate(angle, this));
+		connection.enqueue(NXTMessage.rotate(angle, this));
 	}
 
 	public void flt() {
-		Connection.enqueue(NXTMessage.flt);
+		connection.enqueue(NXTMessage.flt(this));
 	}
 
 	public boolean isMoving() {
 		final List<Boolean> answer = new ArrayList<>();
-		Connection.addRequest(NXTMessage.isMoving, new RequestListener() {
+		connection.addRequest(NXTMessage.isMoving(this), new RequestListener() {
 			@Override
 			public void AnswerArrived(String reply) {
 				if (reply.equals("true")) {
@@ -64,5 +62,4 @@ public class Motor {
 		});
 		return answer.get(0);
 	}
-
 }
