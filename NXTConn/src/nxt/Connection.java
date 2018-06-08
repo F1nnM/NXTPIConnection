@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 import datatype.NXTMessage;
 import lejos.pc.comm.NXTComm;
 import listener.RequestListener;
-import main.Logger;
 
 public class Connection {
 	
@@ -73,7 +72,9 @@ public class Connection {
 			if(in.available() > 0) {
 				ArrayList<NXTMessage> messages = new ArrayList<>();
 				for (String s:in.readUTF().split(":")) {
-					messages.add(NXTMessage.toNxtMessage(s));
+					if(!s.isEmpty()) {
+						messages.add(NXTMessage.toNxtMessage(s));
+					}
 				}
 				nxt.newMessageArrived(messages.toArray(new NXTMessage[0]));
 			}
