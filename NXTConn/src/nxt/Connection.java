@@ -60,6 +60,7 @@ public class Connection {
 		if(queue.length() != 0) {
 			try {
 				out.writeUTF(queue.toString());
+				out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

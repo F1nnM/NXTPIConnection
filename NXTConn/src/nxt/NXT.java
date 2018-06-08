@@ -31,7 +31,7 @@ public class NXT {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public Motors getMotors() {
 		return motors;
 	}
