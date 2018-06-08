@@ -10,10 +10,10 @@ import lejos.pc.comm.NXTInfo;
 import listener.NewMessageListener;
 
 public class NXT {
-	
+
 	private Motors motors;
 	private Buttons buttons;
-	
+
 	private Connection connection;
 	private LCD lcd;
 	private NXTComm nxtComm;
@@ -24,28 +24,52 @@ public class NXT {
 		motors = new Motors(this);
 		connection = new Connection();
 		lcd = new LCD(this);
-		
+
 		try {
 			nxtComm = NXTCommFactory.createNXTComm(NXTCommFactory.USB);
 		} catch (NXTCommException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Motors getMotors() {
 		return motors;
 	}
-	
+
 	public Buttons getButtons() {
 		return buttons;
 	}
-	
+
 	public Connection getConnection() {
 		return connection;
 	}
-	
+
 	public LCD getLCD() {
 		return lcd;
+	}
+
+	public void waitForFinish() {
+		connection.enqueue(NXTMessage.waitForFinish);
+		final Boolean[] done = { false };
+		addListener(new NewMessageListener() {
+
+			@Override
+			public void onNewMessageArrived(NXTMessage... nxtMessage) {
+				for (NXTMessage message : nxtMessage) {
+					if (message.equals(NXTMessage.done)) {
+						done[0] = true;
+					}
+				}
+			}
+		});
+
+		while (!done[0]) {
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void connect(String name, int delay) {

@@ -3,7 +3,6 @@ package datatype;
 /**
  * A class for messages
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class NXTMessage {
 
     public static final NXTMessage ok = new NXTMessage("ok");
@@ -18,6 +17,7 @@ public class NXTMessage {
     public static final NXTMessage drawLCD = new NXTMessage("drawLCD");
     public static final NXTMessage setSpeed = new NXTMessage("setSpeed");
     public static final NXTMessage rotate = new NXTMessage("rotate");
+    public static final NXTMessage waitForFinish = new NXTMessage("waitForFinish");
     
     private String message;
     private String[] values;
@@ -50,9 +50,9 @@ public class NXTMessage {
      * @return the NXTMessage
      */
     public static NXTMessage toNxtMessage(String in) {
-        if (in.contains(",")) {
-            String[] arr = in.split(",", 1);
-            return new NXTMessage(arr[0], arr[1].split("."));
+        if (in.contains("\\.")) {
+            String[] arr = in.split("\\.", 1);
+            return new NXTMessage(arr[0], arr[1].split(","));
         } else {
             return new NXTMessage(in);
         }
@@ -116,9 +116,9 @@ public class NXTMessage {
     	if (values != null) {
     		StringBuilder builder = new StringBuilder();
     		for (String s:values) {
-    			builder.append(s).append(".");
+    			builder.append(s).append(",");
     		}
-    		return message + "," + builder.toString();
+    		return message + "\\." + builder.toString();
     	}
         return message;
     }
