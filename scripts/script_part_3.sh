@@ -147,13 +147,18 @@ sudo sh -c "echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf
 sudo sh -c "echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect lighttpd' | debconf-set-selections"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install phpmyadmin -y -q
 
-# Reload lighttpd
-echo -e "${CYAN}Reloading lighttpd...$NC"
-sudo /etc/init.d/lighttpd force-reload
+if [ $? -eq 0 ]; then
+    # Installation of phpmyadmin failed
+    echo -e "${CYAN}Installation of phpmyadmin failed. This may happen during the Installation of phpmyadmin.$NC"
 
-# Install phpmyadmin second time, because first time installation always fails
-echo -e "${CYAN}Trying to Install phpmyadmin second time, if first time installation fails...$NC"
-sudo apt-get install phpmyadmin -y
+    # Reload lighttpd
+    echo -e "${CYAN}Reloading lighttpd...$NC"
+    sudo /etc/init.d/lighttpd force-reload
+
+    # Install phpmyadmin second time
+    echo -e "${CYAN}Trying to Install phpmyadmin second time...$NC"
+    sudo apt-get install phpmyadmin -y
+fi
 
 # Install Java
 echo -e "${CYAN}Installing Java...$NC"
