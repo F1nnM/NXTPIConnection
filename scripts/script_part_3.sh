@@ -38,7 +38,7 @@ echo -e "${CYAN}Installing libusb-dev...$NC"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install libusb-dev -y -q
 
 # Install ant
-echo -e "${CYAN}Installing Ant...NC"
+echo -e "${CYAN}Installing Ant...$NC"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install ant -y -q
 
 # Download leJos lib
