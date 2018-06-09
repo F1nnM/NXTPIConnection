@@ -1,4 +1,4 @@
-# NXTPIConnection [![NXTConn Release v0.1.3](https://img.shields.io/badge/NXTConn_Release-v0.1.3-blue.svg)](https://github.com/MarkusJx/NXTPIConnection/releases)
+# NXTPIConnection [![NXTConn Release v0.1.3](https://img.shields.io/badge/NXTConn_Release-v0.1.3-blue.svg)](https://github.com/MarkusJx/NXTPIConnection/releases/tag/v0.1.3)
 
 ## Requirements
 * A Raspberry Pi Model 3 running [Raspbian Stretch with Desktop](https://downloads.raspberrypi.org/raspbian_latest). [(Torrent Download)](https://downloads.raspberrypi.org/raspbian_latest.torrent)
@@ -7,6 +7,7 @@
 * [NXTConn Javadoc](https://markusjx.github.io/NXTPIConnection/NXTConnJavadoc/)
 
 ## Useful Links
+* [Releases](https://github.com/MarkusJx/NXTPIConnection/releases)
 * [RaspAp](https://github.com/billz/raspap-webgui)
 * [GumCP](https://github.com/gumslone/GumCP)
 * [leJOS NXJ](https://sourceforge.net/projects/nxt.lejos.p/files/)
