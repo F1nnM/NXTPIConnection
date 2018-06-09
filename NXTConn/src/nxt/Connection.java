@@ -179,6 +179,18 @@ public class Connection {
 	}
 
 	/**
+	 * this method handles the Buttons
+	 * 
+	 * @param nxtMessage
+	 *            a NXTMessage
+	 */
+	private void handleButtons(NXTMessage nxtMessage) {
+		if (nxtMessage.equals(NXTMessage.buttonPressed)) {
+			nxt.getButtons().getButton(nxtMessage.getValues()[0]).buttonPressed();
+		}
+	}
+
+	/**
 	 * this method enqueues a command
 	 * 
 	 * @param nxtMessage
@@ -230,6 +242,7 @@ public class Connection {
 					}
 					for (NXTMessage m : messages) {
 						replyReceived(m);
+						handleButtons(m);
 					}
 					nxt.newMessageArrived(messages.toArray(new NXTMessage[0]));
 				}
