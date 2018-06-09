@@ -1,4 +1,4 @@
-# NXTPIConnection
+# NXTPIConnection [![NXTConn Release v0.1.3](https://img.shields.io/badge/NXTConn_Release-v0.1.3-blue.svg)](https://github.com/MarkusJx/NXTPIConnection/releases)
 
 ## Requirements
 * A Raspberry Pi Model 3 running [Raspbian Stretch with Desktop](https://downloads.raspberrypi.org/raspbian_latest). [(Torrent Download)](https://downloads.raspberrypi.org/raspbian_latest.torrent)
