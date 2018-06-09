@@ -8,7 +8,9 @@ function main() {
             mainclass=$(cut -d' ' -f2 <<< $mainclassmf)
             mainclass=$(sed -e "s/[^.a-zA-ZäÄüÜöÖ0-9_$]//g" <<< $mainclass)
             echo "Path to main class: $mainclass"
-            sudo java -d32 -cp "$filename:/opt/leJOS_NXJ_0.9.1beta-3/lib/pc/*" $mainclass
+            jarargs=${3#${1}}
+            jarargs=${jarargs#${2}}
+            sudo java -d32 -cp "$filename:/opt/leJOS_NXJ_0.9.1beta-3/lib/pc/*" $mainclass $jarargs
         else
             echo "The given file is no jar file!"
         fi
@@ -17,4 +19,7 @@ function main() {
     fi
 }
 
-main "$1" "$2"
+args=${@#${1}}
+args=${@#${2}}
+
+main "$1" "$2" "@"
