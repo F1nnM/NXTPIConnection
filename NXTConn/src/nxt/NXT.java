@@ -1,6 +1,7 @@
 package nxt;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import datatype.*;
 import lejos.pc.comm.NXTComm;
@@ -9,6 +10,9 @@ import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTInfo;
 import listener.NewMessageListener;
 
+/**
+ * a class for the NXT
+ */
 public class NXT {
 
 	private Motors motors;
@@ -19,6 +23,9 @@ public class NXT {
 	private NXTComm nxtComm;
 	private ArrayList<NewMessageListener> listeners = new ArrayList<>();
 
+	/**
+	 * the constructor of NXT
+	 */
 	public NXT() {
 		buttons = new Buttons();
 		motors = new Motors(this);
@@ -31,25 +38,89 @@ public class NXT {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * this method forces the connection to net send any commands to the NXT; this
+	 * method is meant to be used with the method sendSyncMessage()
+	 */
+	public void doNotSend() {
+		connection.doNotSend();
+	}
+
+	/**
+	 * this method sends a synchronised message
+	 * 
+	 * @return the time, when the commands in the messages should be executed
+	 */
+	public long sendSyncMessage() {
+		Calendar c = connection.getCalendar();
+		c.set(Calendar.SECOND, 1);
+		sendSyncMessage(c.getTimeInMillis());
+
+		return c.getTimeInMillis();
+	}
+
+	/**
+	 * this method sends a synchronised message
+	 * 
+	 * @param runTime
+	 *            the time, when the commands in the messages should be executed
+	 */
+	public void sendSyncMessage(long runTime) {
+		connection.sendSyncMessage(runTime);
+	}
+
+	/**
+	 * this method checks, if this PC is connected to a NXT
+	 * 
+	 * @return a Boolean, if a NXT is connected
+	 */
+	public Boolean isConnected() {
+		return connection.isConnected();
+	}
+
+	/**
+	 * this method returns the motors of the NXT
+	 * 
+	 * @return the motors of the NXT
+	 */
 	public Motors getMotors() {
 		return motors;
 	}
 
+	/**
+	 * this method returns the buttons of the NXT
+	 * 
+	 * @return
+	 */
 	public Buttons getButtons() {
 		return buttons;
 	}
 
+	/**
+	 * this method returns the connection to the NXT; this method is not meant to be
+	 * called by the user
+	 * 
+	 * @return the connection
+	 */
 	public Connection getConnection() {
 		return connection;
 	}
 
+	/**
+	 * this method returns the LCD of the NXT
+	 * 
+	 * @return the LCD
+	 */
 	public LCD getLCD() {
 		return lcd;
 	}
 
-	public void waitForFinish() {
-		connection.enqueue(NXTMessage.waitForFinish);
+	/**
+	 * this method waits until the NXT has finished its actions
+	 */
+	public void waitTillFinished() {
+		connection.enqueue(NXTMessage.waitTillFinished);
 		final Boolean[] done = { false };
 		addListener(new NewMessageListener() {
 
@@ -72,6 +143,14 @@ public class NXT {
 		}
 	}
 
+	/**
+	 * this method connects to a NXT
+	 * 
+	 * @param name
+	 *            the name of the NXt
+	 * @param delay
+	 *            the delay between sending arrays of commands
+	 */
 	public void connect(String name, int delay) {
 		try {
 			if (nxtComm.search(name).length == 0) {
@@ -87,6 +166,14 @@ public class NXT {
 		connection.conn(delay, nxtComm, this);
 	}
 
+	/**
+	 * this method connects to a NXT
+	 * 
+	 * @param nxtInfo
+	 *            the NXTInfo containing the NXT to connect to
+	 * @param delay
+	 *            the delay between sending arrays of commands
+	 */
 	public void connect(NXTInfo nxtInfo, int delay) {
 		try {
 			if (!nxtComm.open(nxtInfo)) {
@@ -102,13 +189,25 @@ public class NXT {
 		connection.conn(delay, nxtComm, this);
 	}
 
+	/**
+	 * this method adds a NewMessageListener
+	 * 
+	 * @param listener
+	 *            the NewMessageListener
+	 */
 	public void addListener(NewMessageListener listener) {
 		listeners.add(listener);
 	}
 
-	protected void newMessageArrived(NXTMessage... nxtMessage) {
+	/**
+	 * this method notifies all Listeners of a new Message
+	 * 
+	 * @param nxtMessages
+	 *            the new messages
+	 */
+	protected void newMessageArrived(NXTMessage... nxtMessages) {
 		for (NewMessageListener listener : listeners) {
-			listener.onNewMessageArrived(nxtMessage);
+			listener.onNewMessageArrived(nxtMessages);
 		}
 	}
 }
