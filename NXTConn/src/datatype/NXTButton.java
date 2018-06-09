@@ -49,13 +49,4 @@ public class NXTButton {
 			l.buttonPressed();
 		}
 	}
-
-	/**
-	 * notifies all listeners, that the Button is released
-	 */
-	public void buttonReleased() {
-		for (ButtonListener l : listeners) {
-			l.buttonReleased();
-		}
-	}
 }
