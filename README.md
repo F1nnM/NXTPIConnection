@@ -5,6 +5,7 @@
 
 ## Javadoc
 * [NXTConn Javadoc](https://markusjx.github.io/NXTPIConnection/NXTConnJavadoc/)
+* [PiConn Javadoc](https://markusjx.github.io/NXTPIConnection/PiConnJavadoc/)
 
 ## Useful Links
 * [Releases](https://github.com/MarkusJx/NXTPIConnection/releases)
