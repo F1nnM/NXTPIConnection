@@ -17,4 +17,26 @@ public class Buttons {
 		RIGHT = new NXTButton("RIGHT");
 		ESCAPE = new NXTButton("ESCAPE");
 	}
+
+	/**
+	 * this method converts a name of a button to a button
+	 * 
+	 * @param name
+	 *            the name
+	 * @return the Button
+	 */
+	public NXTButton getButton(String name) {
+		switch (name) {
+		case "ENTER":
+			return ENTER;
+		case "LEFT":
+			return LEFT;
+		case "RIGHT":
+			return RIGHT;
+		case "ESCAPE":
+			return ESCAPE;
+		default:
+			return null;
+		}
+	}
 }
