@@ -11,7 +11,7 @@ public class NXTMessage {
 	public static final NXTMessage clearLCD = new NXTMessage("clear");
 	public static final NXTMessage flt = new NXTMessage("flt");
 	public static final NXTMessage isMoving = new NXTMessage("isMoving");
-	public static final NXTMessage buttonListener = new NXTMessage("buttonListener");
+	public static final NXTMessage buttonPressed = new NXTMessage("buttonPressed");
 	public static final NXTMessage getTachoCount = new NXTMessage("getTachoCount");
 	public static final NXTMessage resetTachoCount = new NXTMessage("resetTachoCount");
 	public static final NXTMessage drawLCD = new NXTMessage("drawLCD");
@@ -76,14 +76,14 @@ public class NXTMessage {
 	}
 
 	/**
-	 * this method returns a NXTMessage to listen for Button actions
+	 * this method returns a NXTMessage to listen for Button press
 	 * 
 	 * @param button
 	 *            the Button to listen for
 	 * @return the NXTMessage
 	 */
-	public static NXTMessage buttonListener(NXTButton button) {
-		return new NXTMessage("buttonListener", button.getName());
+	public static NXTMessage buttonPressed(NXTButton button) {
+		return new NXTMessage("buttonPressed", button.getName());
 	}
 
 	/**
