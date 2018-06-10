@@ -7,15 +7,15 @@ import java.util.ArrayList;
 
 import datatypes.NXTMessage;
 import lejos.nxt.LCD;
+import lejos.nxt.comm.NXTConnection;
 import lejos.nxt.comm.USB;
-import lejos.nxt.comm.USBConnection;
 
 /**
  * the Connection class
  */
 public class Connection {
 
-	private static USBConnection usb;
+	private static NXTConnection usb;
 	private static DataOutputStream out;
 	private static DataInputStream in;
 	private static Boolean connected;
@@ -25,9 +25,14 @@ public class Connection {
 	 */
 	public static void connect() {
 		LCD.drawString("waiting for connection", 0, 0);
-		usb = USB.waitForConnection();
+		while (usb == null) {
+			usb = USB.waitForConnection();
+		}
 		out = usb.openDataOutputStream();
 		in = usb.openDataInputStream();
+		
+		LCD.clear();
+		LCD.drawString("Connected", 0, 0);
 
 		connected = true;
 
@@ -43,22 +48,24 @@ public class Connection {
 		try {
 			if (in.available() > 0) {
 				String str = in.readUTF();
-				if (str.equals("bye")) {
-					disconnect();
-				} else if (str.equals("ping")) {
-					out.writeUTF("pong");
-					out.flush();
-				} else if (str.equals("getSystemMillis")) {
-					out.writeLong(System.currentTimeMillis());
-					out.flush();
-				} else {
-					ArrayList<NXTMessage> messages = new ArrayList<>();
-					for (String s : Utilities.split(str, ":")) {
-						if (!s.isEmpty()) {
-							messages.add(NXTMessage.toNxtMessage(s));
-						}
+				ArrayList<NXTMessage> messages = new ArrayList<>();
+
+				for (String s : Utilities.split(str, ":")) {
+					if (s.equals("bye")) {
+						disconnect();
+					} else if (s.equals("ping")) {
+						out.writeUTF("pong:");
+						out.flush();
+					} else if (s.equals("getSystemMillis")) {
+						out.writeUTF(System.currentTimeMillis() + ":");
+						out.flush();
+					} else {
+						messages.add(NXTMessage.toNxtMessage(s));
 					}
-					Utilities.handleInput(false, messages.toArray(new NXTMessage[0]));
+				}
+
+				if (!messages.isEmpty()) {
+					Utilities.handleInput(false, messages.toArray(new NXTMessage[messages.size()]));
 				}
 			}
 		} catch (IOException e) {
@@ -74,7 +81,7 @@ public class Connection {
 	 */
 	public static void send(NXTMessage nxtMessage) {
 		try {
-			out.writeUTF(nxtMessage.toString());
+			out.writeUTF(nxtMessage.toString() + ":");
 			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -84,7 +91,14 @@ public class Connection {
 	/**
 	 * this method disconnects from the pi
 	 */
-	public static void disconnect() {
+	public static synchronized void disconnect() {
+		try {
+			out.writeUTF("bye:");
+			out.flush();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
 		connected = false;
 
 		try {

@@ -127,7 +127,7 @@ public class NXTMessage {
 			for (String s : values) {
 				builder.append(s).append(",");
 			}
-			return message + "\\." + builder.toString();
+			return message + "." + builder.toString();
 		}
 		return message;
 	}

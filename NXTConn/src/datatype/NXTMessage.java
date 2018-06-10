@@ -1,5 +1,7 @@
 package datatype;
 
+import main.Logger;
+
 /**
  * A class for messages
  */
@@ -120,7 +122,7 @@ public class NXTMessage {
 	 * @return the NXTMessage
 	 */
 	public static NXTMessage drawLCD(String toDraw, int x, int y) {
-		return new NXTMessage("draw", toDraw + "." + x + "." + y);
+		return new NXTMessage("drawLCD", toDraw, x + "", y + "");
 	}
 
 	/**
@@ -196,7 +198,8 @@ public class NXTMessage {
 			for (String s : values) {
 				builder.append(s).append(",");
 			}
-			return message + "\\." + builder.toString();
+			Logger.log(builder.toString());
+			return message + "." + builder.toString();
 		}
 		return message;
 	}
