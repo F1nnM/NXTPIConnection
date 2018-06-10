@@ -9,6 +9,7 @@ import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTInfo;
 import listener.NewMessageListener;
+import main.Logger;
 
 /**
  * a class for the NXT
@@ -27,9 +28,9 @@ public class NXT {
 	 * the constructor of NXT
 	 */
 	public NXT() {
-		buttons = new Buttons();
-		motors = new Motors(this);
 		connection = new Connection();
+		buttons = new Buttons(this);
+		motors = new Motors(this);
 		lcd = new LCD(this);
 
 		try {
@@ -152,41 +153,21 @@ public class NXT {
 	 *            the delay between sending arrays of commands
 	 */
 	public void connect(String name, int delay) {
+		NXTInfo nxtInfo = null;
+		Logger.log("Trying to connect to NXT with name: " + name);
 		try {
-			if (nxtComm.search(name).length == 0) {
-				System.err.println("No NXT found using USB");
-				System.exit(1);
+			while (nxtComm.search(name).length == 0) {
+				Logger.log("No NXT found using USB");
+				Thread.sleep(1000);
 			}
-		} catch (NXTCommException e) {
+			nxtInfo = nxtComm.search(name)[0];
+		} catch (NXTCommException | InterruptedException e) {
 			connection.disconnect();
 			e.printStackTrace();
 			System.exit(1);
 		}
 
-		connection.conn(delay, nxtComm, this);
-	}
-
-	/**
-	 * this method connects to a NXT
-	 * 
-	 * @param nxtInfo
-	 *            the NXTInfo containing the NXT to connect to
-	 * @param delay
-	 *            the delay between sending arrays of commands
-	 */
-	public void connect(NXTInfo nxtInfo, int delay) {
-		try {
-			if (!nxtComm.open(nxtInfo)) {
-				System.err.println("No NXT found using USB");
-				System.exit(1);
-			}
-		} catch (NXTCommException e) {
-			connection.disconnect();
-			e.printStackTrace();
-			System.exit(1);
-		}
-
-		connection.conn(delay, nxtComm, this);
+		connection.conn(delay, this, nxtInfo);
 	}
 
 	/**

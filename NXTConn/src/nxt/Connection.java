@@ -13,15 +13,19 @@ import java.util.concurrent.TimeUnit;
 import datatype.NXTMessage;
 import exception.NotConnectedException;
 import lejos.pc.comm.NXTComm;
+import lejos.pc.comm.NXTCommException;
+import lejos.pc.comm.NXTCommFactory;
+import lejos.pc.comm.NXTInfo;
 import listener.RequestListener;
+import main.Logger;
 
 /**
  * a class for handling all the connection stuff between this PC and the NXT
  */
 public class Connection {
 
-	private DataInputStream in;
-	private DataOutputStream out;
+	private DataInputStream in = null;
+	private DataOutputStream out = null;
 	private ScheduledExecutorService Timer;
 	private NXTComm nxtComm;
 	private NXT nxt;
@@ -30,6 +34,7 @@ public class Connection {
 	private Boolean connected;
 	private long NXTMillis;
 	private long SyncMillis;
+	private Boolean ping = false;
 	private Boolean send = true;
 
 	/**
@@ -42,9 +47,14 @@ public class Connection {
 	 * @param nxt
 	 *            an Instance of the NXT Class
 	 */
-	protected void conn(int delay, NXTComm nxtComm, NXT nxt) {
+	protected void conn(int delay, NXT nxt, NXTInfo info) {
 		this.nxt = nxt;
-		this.nxtComm = nxtComm;
+		try {
+			nxtComm = NXTCommFactory.createNXTComm(NXTCommFactory.USB);
+			nxtComm.open(info);
+		} catch (NXTCommException e1) {
+			e1.printStackTrace();
+		}
 		in = new DataInputStream(nxtComm.getInputStream());
 		out = new DataOutputStream(nxtComm.getOutputStream());
 
@@ -54,14 +64,10 @@ public class Connection {
 		NXTMillis = SystemMillis[0];
 		SyncMillis = SystemMillis[1];
 
-		int counter = 0;
-		while (ping() > 1 && (counter = counter + 1) < 100) {
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		Logger.log("Got NXT's current time: " + NXTMillis);
+		Logger.log("Local time: " + SyncMillis);
+
+		Logger.log(getCalendar().getTime().getTime() - Calendar.getInstance().getTimeInMillis() - 2 + "");
 
 		Timer = Executors.newScheduledThreadPool(10);
 		Timer.scheduleAtFixedRate(new Runnable() {
@@ -70,8 +76,16 @@ public class Connection {
 				send();
 				receive();
 			}
-		}, getCalendar().getTime().getTime() - Calendar.getInstance().getTimeInMillis() - 2, delay,
+		}, getCalendar().getTime().getTime() - Calendar.getInstance().getTime().getTime() - 2, delay,
 				TimeUnit.MILLISECONDS);
+
+		/*
+		 * while (ping() > 1.0) { try {
+		 * Logger.log("Ping time was greater than 1ms, retrying..."); Thread.sleep(100);
+		 * } catch (InterruptedException e) { e.printStackTrace(); } }
+		 */
+
+		Logger.done();
 	}
 
 	/**
@@ -92,10 +106,11 @@ public class Connection {
 		long time = 0;
 		try {
 			for (int i = 0; i < 10; i++) {
-				out.writeUTF("ping");
+				out.writeUTF("ping:");
 				out.flush();
+				ping = false;
 				long startTime = System.nanoTime();
-				while (in.available() <= 0) {
+				while (!ping) {
 
 				}
 				time = time + (System.nanoTime() - startTime);
@@ -116,14 +131,40 @@ public class Connection {
 	 */
 	private long[] getSystemMillis() {
 		try {
-			out.writeUTF("getSystemMillis");
+			out.writeUTF("getSystemMillis:");
 			out.flush();
-			long[] ret = { in.readLong(), System.currentTimeMillis() };
-			return ret;
+			String str = in.readUTF();
+			for (String s : str.split(":")) {
+				if (isNumeric(s)) {
+					long[] ret = { Long.parseLong(s), System.currentTimeMillis() };
+					return ret;
+				}
+			}
+			receive(str);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * Checks, if a String is Numeric. Source: https://stackoverflow.com/a/2563653
+	 * 
+	 * @param str
+	 *            the String to check
+	 * @return a Boolean, if the String is numeric
+	 */
+	public static boolean isNumeric(String str) {
+		if (str == null) {
+			return false;
+		}
+		int sz = str.length();
+		for (int i = 0; i < sz; i++) {
+			if (Character.isDigit(str.charAt(i)) == false) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -214,6 +255,7 @@ public class Connection {
 	private void send() {
 		if (queue.length() != 0 && send) {
 			try {
+				Logger.log("Sending queue: " + queue.toString());
 				out.writeUTF(queue.toString());
 				out.flush();
 			} catch (IOException e) {
@@ -229,26 +271,43 @@ public class Connection {
 	private void receive() {
 		try {
 			if (in.available() > 0) {
-				String str = in.readUTF();
-				if (str.equals("bye")) {
-					disconnect();
-				} else {
-					ArrayList<NXTMessage> messages = new ArrayList<>();
-
-					for (String s : str.split(":")) {
-						if (!s.isEmpty()) {
-							messages.add(NXTMessage.toNxtMessage(s));
-						}
-					}
-					for (NXTMessage m : messages) {
-						replyReceived(m);
-						handleButtons(m);
-					}
-					nxt.newMessageArrived(messages.toArray(new NXTMessage[0]));
-				}
+				receive(in.readUTF());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * this method handles new messages with a given String
+	 * 
+	 * @param data
+	 *            the String to handle
+	 */
+	private void receive(String data) {
+		Logger.log("Received data: " + data);
+		
+		ArrayList<NXTMessage> messages = new ArrayList<>();
+
+		for (String s : data.split(":")) {
+			if (!s.isEmpty()) {
+				if (s.equals("bye")) {
+					disconnect();
+				} else if (s.equals("pong")) {
+					ping = true;
+				} else {
+					messages.add(NXTMessage.toNxtMessage(s));
+				}
+			}
+		}
+
+		for (NXTMessage m : messages) {
+			replyReceived(m);
+			handleButtons(m);
+		}
+
+		if (!messages.isEmpty()) {
+			nxt.newMessageArrived(messages.toArray(new NXTMessage[0]));
 		}
 	}
 
