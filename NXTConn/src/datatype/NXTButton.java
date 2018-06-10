@@ -3,6 +3,7 @@ package datatype;
 import java.util.ArrayList;
 
 import listener.ButtonListener;
+import nxt.NXT;
 
 /**
  * A class for the buttons of the NXT. For further information on how the
@@ -13,6 +14,7 @@ public class NXTButton {
 	private static ArrayList<ButtonListener> listeners = new ArrayList<>();
 
 	private String name;
+	private NXT nxt;
 
 	/**
 	 * the constructor of NXTButton
@@ -20,8 +22,9 @@ public class NXTButton {
 	 * @param name
 	 *            the name of the Button; e.g. "LEFT", "RIGHT", "ENTER" or "ESCAPE"
 	 */
-	public NXTButton(String name) {
+	public NXTButton(String name, NXT nxt) {
 		this.name = name;
+		this.nxt = nxt;
 	}
 
 	/**
@@ -38,6 +41,7 @@ public class NXTButton {
 	 *            the listener to add
 	 */
 	public void addButtonListener(ButtonListener listener) {
+		nxt.getConnection().enqueue(NXTMessage.buttonPressed(this));
 		listeners.add(listener);
 	}
 

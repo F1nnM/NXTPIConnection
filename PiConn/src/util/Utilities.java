@@ -9,6 +9,7 @@ import datatypes.Motors;
 import datatypes.NXTMessage;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
+import lejos.nxt.comm.RConsole;
 
 /**
  * a Utility class
@@ -56,7 +57,7 @@ public class Utilities {
 
 			arr.removeAll(toRemove);
 
-			return arr.toArray(new String[0]);
+			return (arr.toArray(new String[arr.size()]));
 		}
 	}
 
@@ -96,6 +97,8 @@ public class Utilities {
 			} else if (m.equals(NXTMessage.isMoving)) {
 				Motors.isMoving(m.getValues()[0]);
 			} else if (m.equals(NXTMessage.buttonPressed)) {
+				LCD.clear();
+				LCD.drawString("BUTTON " + m.getValues()[0], 0, 0);
 				Buttons.buttonPressed(m.getValues()[0]);
 			} else if (m.equals(NXTMessage.getTachoCount)) {
 				Motors.getTachoCount(m.getValues()[0]);
@@ -132,7 +135,11 @@ public class Utilities {
 
 			@Override
 			public void run() {
-				handleInput(true, messages);
+				try {
+					handleInput(true, messages);
+				} catch (Exception e) {
+					e.printStackTrace(RConsole.getPrintStream());
+				}
 			}
 		}, runTime - System.currentTimeMillis());
 	}

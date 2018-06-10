@@ -1,5 +1,7 @@
 package datatype;
 
+import nxt.NXT;
+
 public class Buttons {
 
 	// Definition of the Buttons
@@ -11,11 +13,11 @@ public class Buttons {
 	/**
 	 * the Constructor of Buttons, which creates all Buttons
 	 */
-	public Buttons() {
-		ENTER = new NXTButton("ENTER");
-		LEFT = new NXTButton("LEFT");
-		RIGHT = new NXTButton("RIGHT");
-		ESCAPE = new NXTButton("ESCAPE");
+	public Buttons(NXT nxt) {
+		ENTER = new NXTButton("ENTER", nxt);
+		LEFT = new NXTButton("LEFT", nxt);
+		RIGHT = new NXTButton("RIGHT", nxt);
+		ESCAPE = new NXTButton("ESCAPE", nxt);
 	}
 
 	/**
