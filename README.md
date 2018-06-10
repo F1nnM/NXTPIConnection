@@ -1,4 +1,5 @@
-# NXTPIConnection [![NXTConn Release v0.1.3](https://img.shields.io/badge/NXTConn_Release-v0.1.3-blue.svg)](https://github.com/MarkusJx/NXTPIConnection/releases/tag/v0.1.3)
+# NXTPIConnection 
+[![NXTPiConnection Release v0.1.4](https://img.shields.io/badge/NXTPiConnection_Release-v0.1.4-blue.svg)](https://github.com/MarkusJx/NXTPIConnection/releases/tag/v0.1.4) [![NXTConn Status Debugging](https://img.shields.io/badge/NXTConn_Status-Debugging-orange.svg)](https://github.com/MarkusJx/NXTPIConnection/releases/tag/v0.1.4) [![PiConn Status Debugging](https://img.shields.io/badge/PiConn_Status-Debugging-orange.svg)](https://github.com/MarkusJx/NXTPIConnection/releases/tag/v0.1.4) 
 
 ## Requirements
 * A Raspberry Pi Model 3 running [Raspbian Stretch with Desktop](https://downloads.raspberrypi.org/raspbian_latest). [(Torrent Download)](https://downloads.raspberrypi.org/raspbian_latest.torrent)
