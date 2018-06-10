@@ -9,6 +9,7 @@
 * [PiConn Javadoc](https://markusjx.github.io/NXTPIConnection/PiConnJavadoc/)
 
 ## Useful Links
+* [Website](https://markusjx.github.io/NXTPIConnection/)
 * [Releases](https://github.com/MarkusJx/NXTPIConnection/releases)
 * [RaspAp](https://github.com/billz/raspap-webgui)
 * [GumCP](https://github.com/gumslone/GumCP)
