@@ -53,4 +53,10 @@ echo -e "------------------------------------------------------------------\n\n\
 
 # Reboot
 echo -e "${CYAN}Reboot$NC"
+echo "Reboot in: 3" | wall
+sleep 1
+echo "Reboot in: 2" | wall
+sleep 1
+echo "Reboot in: 1" | wall
+sleep 1
 sudo reboot now
