@@ -1,6 +1,7 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,6 +17,9 @@ import lejos.nxt.comm.RConsole;
  */
 public class Utilities {
 
+	private static ArrayList<NXTMessage> toRun = new ArrayList<>();
+	private static Boolean wait = false;
+
 	/**
 	 * this method splits a String by a delimiter it works pretty much like the
 	 * String.split() in native Java.
@@ -27,38 +31,12 @@ public class Utilities {
 	 * @return an Array, containing the split String
 	 */
 	public static String[] split(String toSplit, String delimiter) {
-		ArrayList<String> arr = new ArrayList<>();
-		ArrayList<Integer> delimiters = new ArrayList<>();
-		for (int i = 0; i < toSplit.length(); i++) {
-			if (toSplit.substring(i).startsWith(delimiter)) {
-				delimiters.add(i);
-			}
+		ArrayList<String> elements = new ArrayList<>();
+		StringTokenizer stringTokenizer = new StringTokenizer(toSplit, delimiter);
+		while(stringTokenizer.hasMoreElements()) {
+			elements.add(stringTokenizer.nextToken());
 		}
-
-		if (delimiters.isEmpty()) {
-			String[] ret = { toSplit };
-			return ret;
-		} else {
-			arr.add(toSplit.substring(0, delimiters.get(0)));
-
-			for (int i = 1; i < delimiters.size(); i++) {
-				arr.add(toSplit.substring(delimiters.get(i - 1) + delimiter.length(), delimiters.get(i)));
-			}
-
-			arr.add(toSplit.substring(delimiters.get(delimiters.size() - 1) + delimiter.length()));
-
-			ArrayList<String> toRemove = new ArrayList<>();
-
-			for (String s : arr) {
-				if (s.trim().isEmpty()) {
-					toRemove.add(s);
-				}
-			}
-
-			arr.removeAll(toRemove);
-
-			return (arr.toArray(new String[arr.size()]));
-		}
+		return elements.toArray(new String[elements.size()]);
 	}
 
 	/**
@@ -89,35 +67,42 @@ public class Utilities {
 	 *            the new Messages to handle
 	 */
 	public static void handleInput(Boolean syncTask, NXTMessage... messages) {
-		for (NXTMessage m : messages) {
-			if (m.equals(NXTMessage.clearLCD)) {
-				LCD.clear();
-			} else if (m.equals(NXTMessage.flt)) {
-				Motors.flt(m.getValues()[0]);
-			} else if (m.equals(NXTMessage.isMoving)) {
-				Motors.isMoving(m.getValues()[0]);
-			} else if (m.equals(NXTMessage.buttonPressed)) {
-				LCD.clear();
-				LCD.drawString("BUTTON " + m.getValues()[0], 0, 0);
-				Buttons.buttonPressed(m.getValues()[0]);
-			} else if (m.equals(NXTMessage.getTachoCount)) {
-				Motors.getTachoCount(m.getValues()[0]);
-			} else if (m.equals(NXTMessage.resetTachoCount)) {
-				Motors.resetTachoCount(m.getValues()[0]);
-			} else if (m.equals(NXTMessage.drawLCD)) {
-				LCD.drawString(m.getValues()[0], Integer.parseInt(m.getValues()[1]),
-						Integer.parseInt(m.getValues()[2]));
-			} else if (m.equals(NXTMessage.setSpeed)) {
-				Motors.setSpeed(Float.parseFloat(m.getValues()[0]), m.getValues()[1]);
-			} else if (m.equals(NXTMessage.rotate)) {
-				Motors.rotate(Integer.parseInt(m.getValues()[0]), m.getValues()[1]);
-			} else if (m.equals(NXTMessage.waitTillFinished)) {
-				waitTillFinished();
-			} else if (m.equals(NXTMessage.runSyncTask) & !syncTask) {
-				runSyncTask(Long.parseLong(m.getValues()[0]), messages);
-				break;
-			} else if (m.equals(NXTMessage.stop)) {
-				Motors.stop(m.getValues()[0]);
+		if (!wait) {
+			for (NXTMessage m : messages) {
+				if (m.equals(NXTMessage.clearLCD)) {
+					LCD.clear();
+				} else if (m.equals(NXTMessage.flt)) {
+					Motors.flt(m.getValues()[0]);
+				} else if (m.equals(NXTMessage.isMoving)) {
+					Motors.isMoving(m.getValues()[0]);
+				} else if (m.equals(NXTMessage.buttonPressed)) {
+					LCD.clear();
+					LCD.drawString("BUTTON " + m.getValues()[0], 0, 0);
+					Buttons.buttonPressed(m.getValues()[0]);
+				} else if (m.equals(NXTMessage.getTachoCount)) {
+					Motors.getTachoCount(m.getValues()[0]);
+				} else if (m.equals(NXTMessage.resetTachoCount)) {
+					Motors.resetTachoCount(m.getValues()[0]);
+				} else if (m.equals(NXTMessage.drawLCD)) {
+					LCD.drawString(m.getValues()[0], Integer.parseInt(m.getValues()[1]),
+							Integer.parseInt(m.getValues()[2]));
+				} else if (m.equals(NXTMessage.setSpeed)) {
+					Motors.setSpeed(Float.parseFloat(m.getValues()[0]), m.getValues()[1]);
+				} else if (m.equals(NXTMessage.rotate)) {
+					Motors.rotate(Integer.parseInt(m.getValues()[0]), m.getValues()[1]);
+				} else if (m.equals(NXTMessage.waitTillFinished)) {
+					waitTillFinished();
+				} else if (m.equals(NXTMessage.runSyncTask) & !syncTask) {
+					runSyncTask(Long.parseLong(m.getValues()[0]), messages);
+					wait = true;
+					break;
+				} else if (m.equals(NXTMessage.stop)) {
+					Motors.stop(m.getValues()[0]);
+				}
+			}
+		} else {
+			for (NXTMessage m : messages) {
+				toRun.add(m);
 			}
 		}
 	}
@@ -136,7 +121,8 @@ public class Utilities {
 			@Override
 			public void run() {
 				try {
-					handleInput(true, messages);
+					handleInput(true, toRun.toArray(new NXTMessage[toRun.size()]));
+					toRun.clear();
 				} catch (Exception e) {
 					e.printStackTrace(RConsole.getPrintStream());
 				}

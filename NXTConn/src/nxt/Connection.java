@@ -34,7 +34,6 @@ public class Connection {
 	private Boolean connected;
 	private long NXTMillis;
 	private long SyncMillis;
-	private Boolean ping = false;
 	private Boolean send = true;
 
 	/**
@@ -60,15 +59,19 @@ public class Connection {
 
 		connected = true;
 
-		long[] SystemMillis = getSystemMillis();
-		NXTMillis = SystemMillis[0];
-		SyncMillis = SystemMillis[1];
+		ping();
 
-		Logger.log("Got NXT's current time: " + NXTMillis);
-		Logger.log("Local time: " + SyncMillis);
+		getSystemMillis();
 
-		Logger.log(getCalendar().getTime().getTime() - Calendar.getInstance().getTimeInMillis() - 2 + "");
+		startTimer();
 
+		Logger.done();
+	}
+
+	/**
+	 * this method starts the main timer
+	 */
+	private void startTimer() {
 		Timer = Executors.newScheduledThreadPool(10);
 		Timer.scheduleAtFixedRate(new Runnable() {
 			@Override
@@ -76,16 +79,8 @@ public class Connection {
 				send();
 				receive();
 			}
-		}, getCalendar().getTime().getTime() - Calendar.getInstance().getTime().getTime() - 2, delay,
+		}, getCalendar().getTime().getTime() - Calendar.getInstance().getTime().getTime() - 2, 10,
 				TimeUnit.MILLISECONDS);
-
-		/*
-		 * while (ping() > 1.0) { try {
-		 * Logger.log("Ping time was greater than 1ms, retrying..."); Thread.sleep(100);
-		 * } catch (InterruptedException e) { e.printStackTrace(); } }
-		 */
-
-		Logger.done();
 	}
 
 	/**
@@ -98,53 +93,66 @@ public class Connection {
 	}
 
 	/**
-	 * this method pings the NXT
+	 * this method manages the ping request to the NXT
+	 */
+	private void ping() {
+		double pingTime;
+		while ((pingTime = getPingTime()) > 10.0) {
+			try {
+				Logger.log("Ping time was greater than 10ms, is was: " + pingTime + ",retrying...");
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Logger.log("Average ping time is: " + Math.round(pingTime * 1000) / 1000.0 + "ms");
+	}
+
+	/**
+	 * this method sends a ping request the NXT
 	 * 
 	 * @return the average ping time
 	 */
-	private double ping() {
-		long time = 0;
+	private double getPingTime() {
+		double time = 0;
 		try {
-			for (int i = 0; i < 10; i++) {
-				out.writeUTF("ping:");
+			for (int i = 0; i < 100; i++) {
+				out.writeUTF("ping");
 				out.flush();
-				ping = false;
 				long startTime = System.nanoTime();
-				while (!ping) {
-
-				}
-				time = time + (System.nanoTime() - startTime);
+				in.readUTF();
+				time = time + ((System.nanoTime() - startTime) / 1000000.0);
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return time / 10.0;
+		return time / 100.0;
 	}
 
 	/**
 	 * this method gets the SystemMillis of the NXT
-	 * 
-	 * @return an long array, where the first value is the time of the NXT, the
-	 *         second one the time of this PC, when the answer of the NXT was
-	 *         received
 	 */
-	private long[] getSystemMillis() {
+	private void getSystemMillis() {
 		try {
 			out.writeUTF("getSystemMillis:");
 			out.flush();
 			String str = in.readUTF();
 			for (String s : str.split(":")) {
 				if (isNumeric(s)) {
-					long[] ret = { Long.parseLong(s), System.currentTimeMillis() };
-					return ret;
+					long[] SystemMillis = { Long.parseLong(s), System.currentTimeMillis() };
+					NXTMillis = SystemMillis[0];
+					SyncMillis = SystemMillis[1];
+
+					Logger.log("Got NXT's current time: " + NXTMillis);
+					Logger.log("Local time: " + SyncMillis);
 				}
 			}
 			receive(str);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 
 	/**
@@ -226,6 +234,7 @@ public class Connection {
 	 *            a NXTMessage
 	 */
 	private void handleButtons(NXTMessage nxtMessage) {
+		Logger.log(nxtMessage.getMessage());
 		if (nxtMessage.equals(NXTMessage.buttonPressed)) {
 			nxt.getButtons().getButton(nxtMessage.getValues()[0]).buttonPressed();
 		}
@@ -239,7 +248,15 @@ public class Connection {
 	 */
 	public void enqueue(NXTMessage nxtMessage) {
 		if (connected) {
-			queue.append(nxtMessage.toString()).append(":");
+			if (send) {
+				try {
+					out.writeUTF(nxtMessage.toString());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				queue.append(nxtMessage.toString()).append(":");
+			}
 		} else {
 			try {
 				throw new NotConnectedException();
@@ -255,13 +272,16 @@ public class Connection {
 	private void send() {
 		if (queue.length() != 0 && send) {
 			try {
-				Logger.log("Sending queue: " + queue.toString());
 				out.writeUTF(queue.toString());
-				out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			queue = new StringBuilder();
+		}
+		try {
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -270,9 +290,7 @@ public class Connection {
 	 */
 	private void receive() {
 		try {
-			if (in.available() > 0) {
-				receive(in.readUTF());
-			}
+			receive(in.readUTF());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -285,16 +303,12 @@ public class Connection {
 	 *            the String to handle
 	 */
 	private void receive(String data) {
-		Logger.log("Received data: " + data);
-		
 		ArrayList<NXTMessage> messages = new ArrayList<>();
 
 		for (String s : data.split(":")) {
 			if (!s.isEmpty()) {
 				if (s.equals("bye")) {
 					disconnect();
-				} else if (s.equals("pong")) {
-					ping = true;
 				} else {
 					messages.add(NXTMessage.toNxtMessage(s));
 				}
@@ -321,7 +335,7 @@ public class Connection {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
 		calendar.set(Calendar.MINUTE, Calendar.getInstance().get(Calendar.MINUTE));
-		calendar.set(Calendar.SECOND, Calendar.getInstance().get(Calendar.SECOND) + 2);
+		calendar.set(Calendar.SECOND, Calendar.getInstance().get(Calendar.SECOND) + 10);
 		calendar.set(Calendar.MILLISECOND, 0);
 		return calendar;
 	}
@@ -336,6 +350,7 @@ public class Connection {
 
 		try {
 			out.writeUTF("bye");
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
