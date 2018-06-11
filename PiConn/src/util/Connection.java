@@ -3,7 +3,6 @@ package util;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import datatypes.NXTMessage;
 import lejos.nxt.LCD;
@@ -30,44 +29,52 @@ public class Connection {
 		}
 		out = usb.openDataOutputStream();
 		in = usb.openDataInputStream();
-		
+
 		LCD.clear();
 		LCD.drawString("Connected", 0, 0);
 
 		connected = true;
+
+		try {
+			String str = "";
+			while ((str = in.readUTF()).equals("ping")) {
+				out.writeUTF("pong");
+				out.flush();
+			}
+			LCD.drawString(str, 0, 0);
+			receive(str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		while (connected) {
 			receive();
 		}
 	}
 
+	private static void receive() {
+		try {
+			receive(in.readUTF());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * this method handles new Messages
 	 */
-	private static void receive() {
+	private static void receive(String in) {
 		try {
-			if (in.available() > 0) {
-				String str = in.readUTF();
-				ArrayList<NXTMessage> messages = new ArrayList<>();
-
-				for (String s : Utilities.split(str, ":")) {
-					if (s.equals("bye")) {
-						disconnect();
-					} else if (s.equals("ping")) {
-						out.writeUTF("pong:");
-						out.flush();
-					} else if (s.equals("getSystemMillis")) {
-						out.writeUTF(System.currentTimeMillis() + ":");
-						out.flush();
-					} else {
-						messages.add(NXTMessage.toNxtMessage(s));
-					}
-				}
-
-				if (!messages.isEmpty()) {
-					Utilities.handleInput(false, messages.toArray(new NXTMessage[messages.size()]));
+			for (String s : Utilities.split(in, ":")) {
+				if (s.equals("bye")) {
+					disconnect();
+				} else if (s.equals("getSystemMillis")) {
+					out.writeUTF(System.currentTimeMillis() + ":");
+				} else {
+					Utilities.handleInput(false, NXTMessage.toNxtMessage(s));
 				}
 			}
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
