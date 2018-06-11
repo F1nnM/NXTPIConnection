@@ -1,6 +1,7 @@
 package datatype;
 
-import main.Logger;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  * A class for messages
@@ -58,12 +59,31 @@ public class NXTMessage {
 	 * @return the NXTMessage
 	 */
 	public static NXTMessage toNxtMessage(String in) {
-		if (in.contains("\\.")) {
-			String[] arr = in.split("\\.", 1);
+		if (in.contains(".")) {
+			String[] arr = split(in, ".");
 			return new NXTMessage(arr[0], arr[1].split(","));
 		} else {
 			return new NXTMessage(in);
 		}
+	}
+
+	/**
+	 * this method splits a String by a delimiter it works pretty much like the
+	 * String.split() in native Java.
+	 * 
+	 * @param toSplit
+	 *            the String
+	 * @param delimiter
+	 *            the delimiter
+	 * @return an Array, containing the split String
+	 */
+	public static String[] split(String toSplit, String delimiter) {
+		ArrayList<String> elements = new ArrayList<>();
+		StringTokenizer stringTokenizer = new StringTokenizer(toSplit, delimiter);
+		while (stringTokenizer.hasMoreElements()) {
+			elements.add(stringTokenizer.nextToken());
+		}
+		return elements.toArray(new String[elements.size()]);
 	}
 
 	/**
@@ -198,7 +218,6 @@ public class NXTMessage {
 			for (String s : values) {
 				builder.append(s).append(",");
 			}
-			Logger.log(builder.toString());
 			return message + "." + builder.toString();
 		}
 		return message;
