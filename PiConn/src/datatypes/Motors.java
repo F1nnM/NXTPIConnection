@@ -49,6 +49,7 @@ public class Motors {
 	 */
 	public static void setSpeed(float speed, String motor) {
 		getMotor(motor).setSpeed(speed);
+		getMotor(motor).forward();
 	}
 
 	/**
