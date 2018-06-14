@@ -20,6 +20,7 @@ public class NXTMessage {
 	public static final NXTMessage rotate = new NXTMessage("rotate");
 	public static final NXTMessage waitTillFinished = new NXTMessage("waitTillFinished");
 	public static final NXTMessage runSyncTask = new NXTMessage("runSyncTask");
+	public static final NXTMessage continuous = new NXTMessage("continuous");
 	public static final NXTMessage stop = new NXTMessage("stop");
 
 	private String message;
@@ -58,7 +59,7 @@ public class NXTMessage {
 	 */
 	public static NXTMessage toNxtMessage(String in) {
 		if (Utilities.contains(in, ".")) {
-			String[] arr = Utilities.split(in, ".");
+			String[] arr = Utilities.split(in, ".", 1);
 			return new NXTMessage(arr[0], Utilities.split(arr[1], ","));
 		} else {
 			return new NXTMessage(in);
@@ -74,6 +75,19 @@ public class NXTMessage {
 	 */
 	public static NXTMessage buttonPressed(String button) {
 		return new NXTMessage("buttonPressed", button);
+	}
+
+	/**
+	 * this method sends a distance of a UltrasonicSensor
+	 * 
+	 * @param distance
+	 *            the distance to an object
+	 * @param sensorPort
+	 *            the port of the sensor
+	 * @return the NXTMessage
+	 */
+	public static NXTMessage ultraSonicSensorData(int distance, String sensorPort) {
+		return new NXTMessage("ultraSonicSensorData", String.valueOf(distance), sensorPort);
 	}
 
 	/**
