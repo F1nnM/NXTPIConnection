@@ -21,6 +21,7 @@ public class NXTMessage {
 	public static final NXTMessage waitTillFinished = new NXTMessage("waitTillFinished");
 	public static final NXTMessage runSyncTask = new NXTMessage("runSyncTask");
 	public static final NXTMessage continuous = new NXTMessage("continuous");
+	public static final NXTMessage oneCentimetreTravelled = new NXTMessage("oneCentimetreTravelled");
 	public static final NXTMessage stop = new NXTMessage("stop");
 
 	private String message;
@@ -48,6 +49,10 @@ public class NXTMessage {
 	private NXTMessage(String message, String... values) {
 		this.message = message;
 		this.values = values;
+	}
+	
+	public static NXTMessage oneCentimetreTravelled(String motor) {
+		return new NXTMessage("oneCentimetreTravelled", motor);
 	}
 
 	/**

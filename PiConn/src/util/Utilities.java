@@ -133,8 +133,10 @@ public class Utilities {
 					break;
 				} else if (m.equals(NXTMessage.stop)) {
 					Motors.stop(m.getValues()[0]);
-				} else if(m.equals(NXTMessage.continuous)) {
+				} else if (m.equals(NXTMessage.continuous)) {
 					UltrasonicSensors.continuous(m.getValues()[0]);
+				} else if (m.equals(NXTMessage.oneCentimetreTravelled)) {
+					Motors.oneCentimentreTravelled(m.getValues()[0]);
 				}
 			}
 		} else {
