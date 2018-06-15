@@ -17,7 +17,7 @@ public class Connection {
 	private static NXTConnection usb;
 	private static DataOutputStream out;
 	private static DataInputStream in;
-	private static Boolean connected;
+	public static Boolean connected;
 
 	/**
 	 * this method waits for a USB connection
@@ -47,12 +47,19 @@ public class Connection {
 			e.printStackTrace();
 		}
 
-		while (connected) {
-			receive();
-		}
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				while (connected) {
+					receive();
+				}
+			}
+		});
+		t.start();
 	}
 
-	private static void receive() {
+	private static synchronized void receive() {
 		try {
 			receive(in.readUTF());
 		} catch (IOException e) {
@@ -63,18 +70,18 @@ public class Connection {
 	/**
 	 * this method handles new Messages
 	 */
-	private static void receive(String in) {
+	private static synchronized void receive(String in) {
 		try {
 			for (String s : Utilities.split(in, ":")) {
 				if (s.equals("bye")) {
 					disconnect();
 				} else if (s.equals("getSystemMillis")) {
 					out.writeUTF(System.currentTimeMillis() + ":");
+					out.flush();
 				} else {
 					Utilities.handleInput(false, NXTMessage.toNxtMessage(s));
 				}
 			}
-			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -88,6 +95,7 @@ public class Connection {
 	 */
 	public static void send(NXTMessage nxtMessage) {
 		try {
+			LCD.drawString(nxtMessage.toString(), 0, 0);
 			out.writeUTF(nxtMessage.toString() + ":");
 			out.flush();
 		} catch (IOException e) {
@@ -98,7 +106,7 @@ public class Connection {
 	/**
 	 * this method disconnects from the pi
 	 */
-	public static synchronized void disconnect() {
+	public static void disconnect() {
 		try {
 			out.writeUTF("bye:");
 			out.flush();

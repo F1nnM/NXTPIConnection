@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import datatypes.Buttons;
 import datatypes.Motors;
 import datatypes.NXTMessage;
+import datatypes.UltrasonicSensors;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 import lejos.nxt.comm.RConsole;
@@ -31,11 +32,47 @@ public class Utilities {
 	 * @return an Array, containing the split String
 	 */
 	public static String[] split(String toSplit, String delimiter) {
+		return split(toSplit, delimiter, -1);
+	}
+
+	/**
+	 * this method splits a String by a delimiter it works pretty much like the
+	 * String.split() in native Java.
+	 * 
+	 * @param toSplit
+	 *            the String to split
+	 * @param delimiter
+	 *            the delimiter
+	 * @param maxSplits
+	 *            the max number of splits to be made
+	 * @return an Array, containing the split String
+	 */
+	public static String[] split(String toSplit, String delimiter, int maxSplits) {
 		ArrayList<String> elements = new ArrayList<>();
 		StringTokenizer stringTokenizer = new StringTokenizer(toSplit, delimiter);
-		while(stringTokenizer.hasMoreElements()) {
-			elements.add(stringTokenizer.nextToken());
+		int splits = 0;
+		StringBuilder sb = new StringBuilder();
+		while (stringTokenizer.hasMoreElements()) {
+			if (splits < maxSplits || maxSplits == -1) {
+				elements.add(stringTokenizer.nextToken());
+			} else {
+				sb.append(stringTokenizer.nextToken());
+			}
+			splits++;
 		}
+
+		if (sb.length() != 0)
+			elements.add(sb.toString());
+
+		ArrayList<String> toRemove = new ArrayList<>();
+		for (String s : elements) {
+			if (s.trim().isEmpty()) {
+				toRemove.add(s);
+			}
+		}
+
+		elements.removeAll(toRemove);
+
 		return elements.toArray(new String[elements.size()]);
 	}
 
@@ -76,8 +113,6 @@ public class Utilities {
 				} else if (m.equals(NXTMessage.isMoving)) {
 					Motors.isMoving(m.getValues()[0]);
 				} else if (m.equals(NXTMessage.buttonPressed)) {
-					LCD.clear();
-					LCD.drawString("BUTTON " + m.getValues()[0], 0, 0);
 					Buttons.buttonPressed(m.getValues()[0]);
 				} else if (m.equals(NXTMessage.getTachoCount)) {
 					Motors.getTachoCount(m.getValues()[0]);
@@ -98,6 +133,10 @@ public class Utilities {
 					break;
 				} else if (m.equals(NXTMessage.stop)) {
 					Motors.stop(m.getValues()[0]);
+				} else if (m.equals(NXTMessage.continuous)) {
+					UltrasonicSensors.continuous(m.getValues()[0]);
+				} else if (m.equals(NXTMessage.oneCentimetreTravelled)) {
+					Motors.oneCentimentreTravelled(m.getValues()[0]);
 				}
 			}
 		} else {

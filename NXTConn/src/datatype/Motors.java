@@ -25,4 +25,24 @@ public class Motors {
 		C = new NXTMotor("C", connection);
 	}
 
+	/**
+	 * get a NXTMotor from it's name
+	 * 
+	 * @param name
+	 *            the name of the motor
+	 * @return the NXTMotor
+	 */
+	public NXTMotor getMotor(String name) {
+		switch (name) {
+		case "A":
+			return A;
+		case "B":
+			return B;
+		case "C":
+			return C;
+		default:
+			return null;
+		}
+	}
+
 }

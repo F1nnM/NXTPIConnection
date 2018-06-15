@@ -1,5 +1,8 @@
 package datatypes;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import lejos.nxt.Motor;
 import lejos.nxt.NXTRegulatedMotor;
 import util.Connection;
@@ -48,7 +51,37 @@ public class Motors {
 	 *            the name of the motor
 	 */
 	public static void setSpeed(float speed, String motor) {
-		getMotor(motor).setSpeed(speed);
+		NXTRegulatedMotor m = getMotor(motor);
+		m.setSpeed(speed);
+		m.forward();
+	}
+
+	/**
+	 * send a message every travelled one centimetre
+	 * @param motor the motor to listen for
+	 */
+	public static void oneCentimentreTravelled(String motor) {
+		NXTRegulatedMotor m = getMotor(motor);
+		Double[] dist = { 0.0 };
+
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				if (m.getRotationSpeed() != 0) {
+					dist[0] += (m.getRotationSpeed() * 1.88495559215) * 0.001;
+					if (dist[0] >= 1.0) {
+						dist[0] -= 1.0;
+						Connection.send(NXTMessage.oneCentimetreTravelled(motor));
+					}
+				}
+
+				if (!Connection.connected) {
+					t.cancel();
+				}
+			}
+		}, 0, 40);
 	}
 
 	/**
