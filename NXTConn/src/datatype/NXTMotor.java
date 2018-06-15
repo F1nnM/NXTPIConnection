@@ -3,6 +3,7 @@ package datatype;
 import java.util.ArrayList;
 import java.util.List;
 
+import listener.OneCentimetreTravelledListener;
 import listener.RequestListener;
 import nxt.Connection;
 
@@ -14,6 +15,7 @@ public class NXTMotor {
 
 	private String number;
 	private Connection connection;
+	private ArrayList<OneCentimetreTravelledListener> listeners;
 
 	/**
 	 * the Constructor of NXTMotor
@@ -25,6 +27,29 @@ public class NXTMotor {
 	protected NXTMotor(String number, Connection connection) {
 		this.connection = connection;
 		this.number = number;
+		listeners = new ArrayList<>();
+	}
+
+	/**
+	 * add a listener to listen for every travelled centimetre
+	 * 
+	 * @param listener
+	 *            the listener to add
+	 */
+	public void addOneCentimetreTravelledListener(OneCentimetreTravelledListener listener) {
+		if (listeners.isEmpty()) {
+			connection.enqueue(NXTMessage.oneCentimetreTravelled(this));
+		}
+		listeners.add(listener);
+	}
+
+	/**
+	 * notify all listeners
+	 */
+	public void oneCentimetreTravelled() {
+		for (OneCentimetreTravelledListener l : listeners) {
+			l.travelledOneCentimetre();
+		}
 	}
 
 	/**
@@ -42,7 +67,13 @@ public class NXTMotor {
 	 */
 	public void setSpeed(float speed) {
 		connection.enqueue(NXTMessage.setSpeed(speed, this));
+	}
 
+	/**
+	 * this method stops the motor
+	 */
+	public void stop() {
+		connection.enqueue(NXTMessage.stop(this));
 	}
 
 	/**

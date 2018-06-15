@@ -22,6 +22,8 @@ public class NXTMessage {
 	public static final NXTMessage rotate = new NXTMessage("rotate");
 	public static final NXTMessage waitTillFinished = new NXTMessage("waitTillFinished");
 	public static final NXTMessage runSyncTask = new NXTMessage("runSyncTask");
+	public static final NXTMessage ultraSonicSensorData = new NXTMessage("ultraSonicSensorData");
+	public static final NXTMessage oneCentimetreTravelled = new NXTMessage("oneCentimetreTravelled");
 	public static final NXTMessage stop = new NXTMessage("stop");
 
 	private String message;
@@ -68,6 +70,17 @@ public class NXTMessage {
 	}
 
 	/**
+	 * requests to send a message every travelled centimetre
+	 * 
+	 * @param motor
+	 *            the motor to listen
+	 * @return the NXTMessage
+	 */
+	public static NXTMessage oneCentimetreTravelled(NXTMotor motor) {
+		return new NXTMessage("oneCentimetreTravelled", motor.getNumber());
+	}
+
+	/**
 	 * this method splits a String by a delimiter it works pretty much like the
 	 * String.split() in native Java.
 	 * 
@@ -95,6 +108,17 @@ public class NXTMessage {
 	 */
 	public static NXTMessage runSyncTask(long time) {
 		return new NXTMessage("runSyncTask", time + "");
+	}
+
+	/**
+	 * set a Ultrasonic Sensor in continuous mode
+	 * 
+	 * @param sensor
+	 *            the sensor
+	 * @return the NXTMessage
+	 */
+	public static NXTMessage continuous(UltrasonicSensor sensor) {
+		return new NXTMessage("continuous", sensor.getSensorPort().getName());
 	}
 
 	/**
@@ -191,6 +215,10 @@ public class NXTMessage {
 	 */
 	public static NXTMessage isMoving(NXTMotor motor) {
 		return new NXTMessage("isMoving", motor.getNumber());
+	}
+
+	public static NXTMessage stop(NXTMotor motor) {
+		return new NXTMessage("stop", motor.getNumber());
 	}
 
 	/**

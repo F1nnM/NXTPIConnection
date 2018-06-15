@@ -63,7 +63,7 @@ public class Connection {
 
 		getSystemMillis();
 
-		startTimer();
+		startTimer(delay);
 
 		Logger.done();
 	}
@@ -71,15 +71,15 @@ public class Connection {
 	/**
 	 * this method starts the main timer
 	 */
-	private void startTimer() {
-		Timer = Executors.newScheduledThreadPool(10);
+	private void startTimer(int delay) {
+		Timer = Executors.newSingleThreadScheduledExecutor();
 		Timer.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
 				send();
 				receive();
 			}
-		}, getCalendar().getTime().getTime() - Calendar.getInstance().getTime().getTime() - 2, 10,
+		}, getCalendar().getTime().getTime() - Calendar.getInstance().getTime().getTime() - 2, delay,
 				TimeUnit.MILLISECONDS);
 	}
 
@@ -234,9 +234,33 @@ public class Connection {
 	 *            a NXTMessage
 	 */
 	private void handleButtons(NXTMessage nxtMessage) {
-		Logger.log(nxtMessage.getMessage());
 		if (nxtMessage.equals(NXTMessage.buttonPressed)) {
 			nxt.getButtons().getButton(nxtMessage.getValues()[0]).buttonPressed();
+		}
+	}
+
+	/**
+	 * handle Ultrasonic Sensor messages
+	 * 
+	 * @param nxtMessage
+	 *            the message to handle
+	 */
+	private void handleUltrasonicSensors(NXTMessage nxtMessage) {
+		if (nxtMessage.equals(NXTMessage.ultraSonicSensorData)) {
+			nxt.getUltrasonicSensors().getUltrasonicSensor(nxtMessage.getValues()[1])
+					.setDistance(Integer.parseInt(nxtMessage.getValues()[0]));
+		}
+	}
+
+	/**
+	 * handle motor messages
+	 * 
+	 * @param nxtMessage
+	 *            the message to handle
+	 */
+	private void handleMotors(NXTMessage nxtMessage) {
+		if (nxtMessage.equals(NXTMessage.oneCentimetreTravelled)) {
+			nxt.getMotors().getMotor(nxtMessage.getValues()[0]).oneCentimetreTravelled();
 		}
 	}
 
@@ -250,7 +274,9 @@ public class Connection {
 		if (connected) {
 			if (send) {
 				try {
+					Logger.log("Sending message: " + nxtMessage.toString());
 					out.writeUTF(nxtMessage.toString());
+					out.flush();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -273,15 +299,11 @@ public class Connection {
 		if (queue.length() != 0 && send) {
 			try {
 				out.writeUTF(queue.toString());
+				out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			queue = new StringBuilder();
-		}
-		try {
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -318,6 +340,8 @@ public class Connection {
 		for (NXTMessage m : messages) {
 			replyReceived(m);
 			handleButtons(m);
+			handleUltrasonicSensors(m);
+			handleMotors(m);
 		}
 
 		if (!messages.isEmpty()) {
