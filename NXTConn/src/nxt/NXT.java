@@ -18,7 +18,7 @@ public class NXT {
 
 	private Motors motors;
 	private Buttons buttons;
-
+	private UltrasonicSensors ultrasonicSensors;
 	private Connection connection;
 	private LCD lcd;
 	private NXTComm nxtComm;
@@ -32,6 +32,7 @@ public class NXT {
 		buttons = new Buttons(this);
 		motors = new Motors(this);
 		lcd = new LCD(this);
+		ultrasonicSensors = new UltrasonicSensors(this);
 
 		try {
 			nxtComm = NXTCommFactory.createNXTComm(NXTCommFactory.USB);
@@ -78,6 +79,15 @@ public class NXT {
 	 */
 	public Boolean isConnected() {
 		return connection.isConnected();
+	}
+
+	/**
+	 * this method returns the UltrasonicSensors
+	 * 
+	 * @return the UltrasonicSensors
+	 */
+	public UltrasonicSensors getUltrasonicSensors() {
+		return ultrasonicSensors;
 	}
 
 	/**
