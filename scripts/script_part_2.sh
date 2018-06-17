@@ -31,11 +31,11 @@ echo -e "\n"
 
 # Update
 echo -e "${CYAN}Updating sources...$NC"
-sudo DEBIAN_FRONTEND=noninteractive apt-update
+sudo DEBIAN_FRONTEND=noninteractive apt-get update
 
 # Upgrade
 echo -e "${CYAN}Upgrading...$NC"
-sudo DEBIAN_FRONTEND=noninteractive apt-upgrade -y -q
+sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -q
 
 # Remove unnecessary Packages
 echo -e "${CYAN}Running apt-autoremove...$NC"
