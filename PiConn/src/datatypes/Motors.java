@@ -106,6 +106,10 @@ public class Motors {
 		getMotor(motor).flt();
 	}
 
+    public static void rotateTo(int angle, String motor) {
+        getMotor(motor).rotateTo(angle);
+    }
+
 	/**
 	 * this method returns, if the motor is moving
 	 * 

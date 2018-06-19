@@ -33,6 +33,33 @@ sudo mkdir /var/www/html/admin
 echo -e "${CYAN}Cloning GumCP...$NC"
 sudo git clone https://github.com/gumslone/GumCP.git /var/www/html/admin/
 
+# Enable password protection
+echo -e "${CYAN}Updating lighttpd config for password protection...$NC"
+sudo sed -i -e 's/server.modules = (/server.modules = (\n        "mod_auth",/g' /etc/lighttpd/lighttpd.conf
+sudo sh -c 'echo "\n" >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo "auth.debug = 2" >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo "auth.backend = \"htpasswd\"" >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo "auth.backend.htpasswd.userfile = \"/etc/lighttpd/.upasswd\"" >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo "auth.require = ( \"/admin/\" =>" >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo "(" >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo "\"method\" => \"basic\"," >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo "\"realm\" => \"Password Protected Area\"," >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo "\"require\" => \"user=admin\"" >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo ")" >> /etc/lighttpd/lighttpd.conf'
+sudo sh -c 'echo ")" >> /etc/lighttpd/lighttpd.conf'
+
+# Install apache2-utils
+echo -e "${CYAN}Installing apache2-utils...$NC"
+sudo DEBIAN_FRONTEND=noninteractive apt-get install apache2-utils -y
+
+# Set password for user admin
+echo -e "${CYAN}Setting password for user 'admin'$NC"
+sudo htpasswd -c -b /etc/lighttpd/.upasswd admin password
+
+# Restart lighttpd
+echo -e "${CYAN}Restarting lighttpd...$NC"
+sudo /etc/init.d/lighttpd restart
+
 # Install libusb-dev
 echo -e "${CYAN}Installing libusb-dev...$NC"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install libusb-dev -y -q
@@ -77,14 +104,6 @@ sudo wget -q https://git.io/vhBhw -O /opt/NXTPi/nxtpi
 sudo chmod +x /opt/NXTPi/nxtpi
 sudo sh -c 'echo -e "\n" >> /home/pi/.profile'
 sudo sh -c 'echo "export PATH=\$PATH\":/opt/NXTPi\"" >> /home/pi/.profile'
-
-# Create dir for driver
-echo -e "${CYAN}Creating directory for driver...$NC"
-sudo mkdir /home/pi/NXTPi/native
-
-# Move usb driver
-echo -e "${CYAN}Moving USB-Driver to /home/pi/NXTPi/native...$NC"
-sudo mv /tmp/leJOS_NXJ_0.9.1beta-3/lib/pc/native/linux/arm/libjlibnxt.so /home/pi/NXTPi/native
 
 # Install PHP 7.0 and mariadb
 echo -e "${CYAN}Installing PHP 7.0 and mariadb...$NC"

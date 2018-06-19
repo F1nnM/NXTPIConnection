@@ -135,9 +135,11 @@ public class Utilities {
 					Motors.stop(m.getValues()[0]);
 				} else if (m.equals(NXTMessage.continuous)) {
 					UltrasonicSensors.continuous(m.getValues()[0]);
-				} else if (m.equals(NXTMessage.oneCentimetreTravelled)) {
-					Motors.oneCentimentreTravelled(m.getValues()[0]);
-				}
+                } else if (m.equals(NXTMessage.oneCentimetreTravelled)) {
+                    Motors.oneCentimentreTravelled(m.getValues()[0]);
+                } else if (m.equals(NXTMessage.rotateTo)) {
+                    Motors.rotateTo(Integer.parseInt(m.getValues()[0]), m.getValues()[1]);
+                }
 			}
 		} else {
 			for (NXTMessage m : messages) {

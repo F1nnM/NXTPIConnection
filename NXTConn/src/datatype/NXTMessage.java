@@ -45,7 +45,7 @@ public class NXTMessage {
 	 * 
 	 * @param message
 	 *            the containing message
-	 * @param value
+	 * @param values
 	 *            the value of the message
 	 */
 	private NXTMessage(String message, String... values) {
@@ -67,6 +67,10 @@ public class NXTMessage {
 		} else {
 			return new NXTMessage(in);
 		}
+	}
+
+	public static NXTMessage rotateTo(int angle, NXTMotor motor) {
+		return new NXTMessage("rotateTo", String.valueOf(angle), motor.getNumber());
 	}
 
 	/**
