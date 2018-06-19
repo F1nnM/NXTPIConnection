@@ -43,6 +43,10 @@ public class NXTMotor {
 		listeners.add(listener);
 	}
 
+	public void rotateTo(int angle) {
+		connection.enqueue(NXTMessage.rotateTo(angle, this));
+	}
+
 	/**
 	 * notify all listeners
 	 */
