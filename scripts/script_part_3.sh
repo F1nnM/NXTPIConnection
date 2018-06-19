@@ -105,14 +105,6 @@ sudo chmod +x /opt/NXTPi/nxtpi
 sudo sh -c 'echo -e "\n" >> /home/pi/.profile'
 sudo sh -c 'echo "export PATH=\$PATH\":/opt/NXTPi\"" >> /home/pi/.profile'
 
-# Create dir for driver
-echo -e "${CYAN}Creating directory for driver...$NC"
-sudo mkdir /home/pi/NXTPi/native
-
-# Move usb driver
-echo -e "${CYAN}Moving USB-Driver to /home/pi/NXTPi/native...$NC"
-sudo mv /tmp/leJOS_NXJ_0.9.1beta-3/lib/pc/native/linux/arm/libjlibnxt.so /home/pi/NXTPi/native
-
 # Install PHP 7.0 and mariadb
 echo -e "${CYAN}Installing PHP 7.0 and mariadb...$NC"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.0-fpm php7.0 php-ssh2 php-cgi mariadb-server mariadb-client -y -q
