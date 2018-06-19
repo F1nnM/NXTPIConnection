@@ -41,8 +41,6 @@ public class Connection {
 	 * 
 	 * @param delay
 	 *            the delay between sending different messages
-	 * @param nxtComm
-	 *            the NXTComm with the NXTInfo
 	 * @param nxt
 	 *            an Instance of the NXT Class
 	 */
