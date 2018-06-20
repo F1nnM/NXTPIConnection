@@ -41,8 +41,12 @@ public class Main {
 			}
 		});
 
-		nxt.getButtons().ESCAPE.addButtonListener(e -> {
+		nxt.getButtons().ESCAPE.addButtonListener(new ButtonListener() {
+			
+			@Override
+			public void buttonPressed() {
 				Logger.log("ESCAPE");
+			}
 		});
 
 		nxt.getButtons().LEFT.addButtonListener(new ButtonListener() {
