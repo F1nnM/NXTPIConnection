@@ -51,12 +51,12 @@ function nxj() {
 function help() {
     echo "------------------nxtpi help------------------"
     echo "General usage: nxtpi [-jar or -nxj] <args>"
-    echo "To run a leJos PC project: nxtpi -pc [path-to-jarfile] <jarargs>"
+    echo "To run a leJos PC project: nxtpi -jar [path-to-jarfile] <jarargs>"
     echo "To run a leJos NXJ project: nxtpi -nxj [path-to-jarfile] [path-to-source-folder] [main-class] <java-args>"
 }
 
 function main() {
-    if [[ "$1" == "-pc" ]] ; then
+    if [[ "$1" == "-jar" ]] ; then
         run "$@"
     elif [[ "$1" == "-nxj" ]] ; then
         nxj "$@"
