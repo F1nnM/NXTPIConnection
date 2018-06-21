@@ -70,6 +70,13 @@ public class NXTMotor {
 	}
 
 	/**
+	 * tell the motor to start moving
+	 */
+	public void forward() {
+		connection.enqueue(NXTMessage.forward(this));
+	}
+
+	/**
 	 * this method sets the speed of the motor
 	 * 
 	 * @param speed

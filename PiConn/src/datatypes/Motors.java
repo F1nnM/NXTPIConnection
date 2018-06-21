@@ -23,6 +23,16 @@ public class Motors {
 	}
 
 	/**
+	 * send the command forward to a motor
+	 * 
+	 * @param motor
+	 *            the name of the motor
+	 */
+	public static void forward(String motor) {
+		getMotor(motor).forward();
+	}
+
+	/**
 	 * this method returns the TachoCount of a motor
 	 * 
 	 * @param motor
@@ -51,9 +61,7 @@ public class Motors {
 	 *            the name of the motor
 	 */
 	public static void setSpeed(float speed, String motor) {
-		NXTRegulatedMotor m = getMotor(motor);
-		m.setSpeed(speed);
-		m.forward();
+		getMotor(motor).setSpeed(speed);
 	}
 
 	/**

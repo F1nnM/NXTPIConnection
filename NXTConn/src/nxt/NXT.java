@@ -8,6 +8,7 @@ import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTInfo;
+import listener.FinishedListener;
 import listener.NewMessageListener;
 import main.Logger;
 
@@ -50,7 +51,7 @@ public class NXT {
 	}
 
 	/**
-	 * this method sends a synchronised message
+	 * this method sends a synchronized message
 	 * 
 	 * @return the time, when the commands in the messages should be executed
 	 */
@@ -130,28 +131,19 @@ public class NXT {
 	/**
 	 * this method waits until the NXT has finished its actions
 	 */
-	public void waitTillFinished() {
+	public void waitTillFinished(FinishedListener listener) {
 		connection.enqueue(NXTMessage.waitTillFinished);
-		final Boolean[] done = { false };
 		addListener(new NewMessageListener() {
 
 			@Override
 			public void onNewMessageArrived(NXTMessage... nxtMessage) {
 				for (NXTMessage message : nxtMessage) {
 					if (message.equals(NXTMessage.done)) {
-						done[0] = true;
+						listener.onFinish();
 					}
 				}
 			}
 		});
-
-		while (!done[0]) {
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**
