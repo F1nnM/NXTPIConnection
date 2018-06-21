@@ -81,6 +81,10 @@ public class NXTMessage {
 	public static NXTMessage rotateTo(int angle, NXTMotor motor) {
 		return new NXTMessage("rotateTo", String.valueOf(angle), motor.getNumber());
 	}
+	
+	public static NXTMessage forward(NXTMotor motor) {
+		return new NXTMessage("forward", motor.getNumber());
+	}
 
 	/**
 	 * requests to send a message every travelled centimetre

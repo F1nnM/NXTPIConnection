@@ -38,7 +38,6 @@ public class SQL {
 	 * @param password
 	 *            The password of the user. Standard is "".
 	 * @return Boolean to indicate error (false) or success (true).
-	 * @author finn
 	 */
 	public static boolean connect(String hostname, int port, String dbname, String user, String password) {
 		try {
@@ -56,7 +55,6 @@ public class SQL {
 	 * Used to disconnect from the database-server.
 	 * 
 	 * @return Boolean to indicate error (false) or success (true).
-	 * @author finn
 	 */
 	public static boolean disconnect() {
 		try {
@@ -74,9 +72,8 @@ public class SQL {
 	 * @param X
 	 * @param Y
 	 * @return Boolean to indicate error (false) or success (true).
-	 * @author finn
 	 */
-	public static boolean save(int X, int Y) {
+	public static boolean save(double X, double Y) {
 		try {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(
@@ -96,9 +93,8 @@ public class SQL {
 	 * @param Y
 	 * @param Z
 	 * @return Boolean to indicate error (false) or success (true).
-	 * @author finn
 	 */
-	public static boolean save(int X, int Y, int Z) {
+	public static boolean save(double X, double Y, double Z) {
 		try {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate("INSERT INTO `current3D` (`ID`, `X`, `Y`, `Z`, `TIMESTAMP`, `fetched`) VALUES (NULL, '"
@@ -119,9 +115,8 @@ public class SQL {
 	 * @param c
 	 *            awt.java object representing the color.
 	 * @return Boolean to indicate error (false) or success (true).
-	 * @author finn
 	 */
-	public static boolean save(int X, int Y, int Z, Color c) {
+	public static boolean save(double X, double Y, double Z, Color c) {
 		try {
 			int alpha = c.getAlpha();
 			int red = c.getRed();
@@ -145,7 +140,6 @@ public class SQL {
 	 * @param X
 	 * @param Y
 	 * @return Boolean to indicate error (false) or success (true).
-	 * @author finn
 	 */
 	public static boolean updatePosition(int X, int Y) {
 		try {
@@ -164,7 +158,6 @@ public class SQL {
 	 * Init/Reset all three tables. Deletes all previously saved data.
 	 * 
 	 * @return Boolean to indicate error (false) or success (true).
-	 * @author finn
 	 */
 	public static boolean init() {
 		try {
@@ -177,13 +170,13 @@ public class SQL {
 
 			stmt = conn.createStatement();
 			stmt.executeUpdate(
-					"CREATE TABLE `data`.`current` ( `ID` INT NOT NULL AUTO_INCREMENT , `TYPE` ENUM('Sensor','Position') NOT NULL , `X` INT NOT NULL , `Y` INT NOT NULL , `TIMESTAMP` DATETIME NULL DEFAULT CURRENT_TIMESTAMP , `FETCHED` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+					"CREATE TABLE `data`.`current` ( `ID` INT NOT NULL AUTO_INCREMENT , `TYPE` ENUM('Sensor','Position') NOT NULL , `X` DOUBLE NOT NULL , `Y` DOUBLE NOT NULL , `TIMESTAMP` DATETIME NULL DEFAULT CURRENT_TIMESTAMP , `FETCHED` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			stmt = conn.createStatement();
 			stmt.executeUpdate(
-					"CREATE TABLE `data`.`current3D` ( `ID` INT NOT NULL AUTO_INCREMENT , `X` INT NOT NULL , `Y` INT NOT NULL , `Z` INT NOT NULL , `TIMESTAMP` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `FETCHED` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+					"CREATE TABLE `data`.`current3D` ( `ID` INT NOT NULL AUTO_INCREMENT , `X` DOUBLE NOT NULL , `Y` DOUBLE NOT NULL , `Z` DOUBLE NOT NULL , `TIMESTAMP` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `FETCHED` BOOLEAN NOT NULL DEFAULT FALSE , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			stmt = conn.createStatement();
 			stmt.executeUpdate(
-					"CREATE TABLE `data`.`current3DColor` ( `ID` INT NOT NULL AUTO_INCREMENT ,  `X` INT NOT NULL ,  `Y` INT NOT NULL ,  `Z` INT NOT NULL ,  `TIMESTAMP` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,  `FETCHED` BOOLEAN NOT NULL DEFAULT FALSE ,  `COLOR` INT NOT NULL ,    PRIMARY KEY  (`ID`)) ENGINE = InnoDB;");
+					"CREATE TABLE `data`.`current3DColor` ( `ID` INT NOT NULL AUTO_INCREMENT ,  `X` DOUBLE NOT NULL ,  `Y` DOUBLE NOT NULL ,  `Z` DOUBLE NOT NULL ,  `TIMESTAMP` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,  `FETCHED` BOOLEAN NOT NULL DEFAULT FALSE ,  `COLOR` INT NOT NULL ,    PRIMARY KEY  (`ID`)) ENGINE = InnoDB;");
 
 			stmt = conn.createStatement();
 			stmt.executeUpdate("TRUNCATE TABLE `current`;");
@@ -202,7 +195,6 @@ public class SQL {
 	/**
 	 * Set what to do if an error occurs.
 	 * @param state Integer. Either SQL.ERROR_EXIT or SQL.ERROR_PRINT or SQL.ERROR_NONE
-	 * @author finn
 	 */
 	public static void setErrorReporting(int state) {
 		if (state >= 0 && state <= 4)
@@ -231,7 +223,6 @@ public class SQL {
 	/**
 	 * Used to get the last exception created by a SQL call.
 	 * @return Excetption
-	 * @author finn
 	 */
 	public static Exception getLastException() {
 		return last;
