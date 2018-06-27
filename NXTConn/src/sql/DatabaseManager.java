@@ -161,6 +161,15 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * get the current Viewing direction
+	 * 
+	 * @return the Viewing direction of the robot
+	 */
+	public double getViewingDirection() {
+		return viewingDirection;
+	}
+
+	/**
 	 * disconnect from the Database
 	 */
 	public static void disconnect() {
