@@ -48,9 +48,9 @@ public class UltrasonicSensors {
 				s1 = new UltrasonicSensor(SensorPort.S1, nxt);
 			case "S2":
 				s2 = new UltrasonicSensor(SensorPort.S2, nxt);
-			case "s3":
+			case "S3":
 				s3 = new UltrasonicSensor(SensorPort.S3, nxt);
-			case "s4":
+			case "S4":
 				s4 = new UltrasonicSensor(SensorPort.S4, nxt);
 			}
 		}
@@ -70,9 +70,9 @@ public class UltrasonicSensors {
 			return s1;
 		case "S2":
 			return s2;
-		case "s3":
+		case "S3":
 			return s3;
-		case "s4":
+		case "S4":
 			return s4;
 		default:
 			return null;

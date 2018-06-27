@@ -1,8 +1,11 @@
 package sql;
 
+import java.util.ArrayList;
+
 import datatype.NXTMotor;
 import datatype.UltrasonicSensor;
 import listener.OneCentimetreTravelledListener;
+import listener.PositionListener;
 
 /**
  * a Class for managing the Database
@@ -17,9 +20,10 @@ public class DatabaseManager {
 	private static NXTMotor motor = null;
 	private static double x = 0.0;
 	private static double y = 0.0;
+	private static ArrayList<PositionListener> listeners = new ArrayList<>();
 
 	/**
-	 * initialise everything
+	 * Initialize everything
 	 * 
 	 * @param motor
 	 *            a main motor, used to accelerate the robot
@@ -29,6 +33,16 @@ public class DatabaseManager {
 		SQL.init();
 
 		DatabaseManager.motor = motor;
+	}
+
+	/**
+	 * add a positionListener to listen, if the robot has reached it's starting
+	 * point
+	 * 
+	 * @param listener
+	 */
+	public static void addPositionListener(PositionListener listener) {
+		listeners.add(listener);
 	}
 
 	/**
@@ -62,6 +76,24 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * get the x-position of the robot
+	 * 
+	 * @return the x-position of the robot
+	 */
+	public static double getX() {
+		return x;
+	}
+
+	/**
+	 * get the y-position of the robot
+	 * 
+	 * @return the y-position of the robot
+	 */
+	public static double getY() {
+		return y;
+	}
+
+	/**
 	 * the main run method
 	 */
 	public static void run() {
@@ -71,6 +103,12 @@ public class DatabaseManager {
 			public void travelledOneCentimetre() {
 				if (!turning) {
 					setValues();
+				}
+
+				if ((x < 1.0 || x > -1.0) && (y < 1.0 || y > -1.0)) {
+					for (PositionListener listener : listeners) {
+						listener.startReached();
+					}
 				}
 			}
 		});
@@ -120,6 +158,15 @@ public class DatabaseManager {
 		if ((viewingDirection % 360.0) > 1.0) {
 			viewingDirection -= 360.0;
 		}
+	}
+
+	/**
+	 * get the current Viewing direction
+	 * 
+	 * @return the Viewing direction of the robot
+	 */
+	public double getViewingDirection() {
+		return viewingDirection;
 	}
 
 	/**

@@ -69,8 +69,21 @@ public class NXTMessage {
 		}
 	}
 
+	/**
+	 * sends a NXTMessage to rotate a motor to a specific angle
+	 * 
+	 * @param angle
+	 *            the angle to rotate to
+	 * @param motor
+	 *            the motor to rotate
+	 * @return the NXTMessage
+	 */
 	public static NXTMessage rotateTo(int angle, NXTMotor motor) {
 		return new NXTMessage("rotateTo", String.valueOf(angle), motor.getNumber());
+	}
+	
+	public static NXTMessage forward(NXTMotor motor) {
+		return new NXTMessage("forward", motor.getNumber());
 	}
 
 	/**

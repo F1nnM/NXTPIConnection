@@ -24,6 +24,7 @@ public class NXTMessage {
 	public static final NXTMessage oneCentimetreTravelled = new NXTMessage("oneCentimetreTravelled");
 	public static final NXTMessage stop = new NXTMessage("stop");
 	public static final NXTMessage rotateTo = new NXTMessage("rotateTo");
+	public static final NXTMessage forward = new NXTMessage("forward");
 
 	private String message;
 	private String[] values;

@@ -43,6 +43,12 @@ public class NXTMotor {
 		listeners.add(listener);
 	}
 
+	/**
+	 * rotate the motor to a specific angle
+	 * 
+	 * @param angle
+	 *            the angle to rotate to
+	 */
 	public void rotateTo(int angle) {
 		connection.enqueue(NXTMessage.rotateTo(angle, this));
 	}
@@ -61,6 +67,13 @@ public class NXTMotor {
 	 */
 	public String getNumber() {
 		return number;
+	}
+
+	/**
+	 * tell the motor to start moving
+	 */
+	public void forward() {
+		connection.enqueue(NXTMessage.forward(this));
 	}
 
 	/**

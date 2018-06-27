@@ -135,11 +135,13 @@ public class Utilities {
 					Motors.stop(m.getValues()[0]);
 				} else if (m.equals(NXTMessage.continuous)) {
 					UltrasonicSensors.continuous(m.getValues()[0]);
-                } else if (m.equals(NXTMessage.oneCentimetreTravelled)) {
-                    Motors.oneCentimentreTravelled(m.getValues()[0]);
-                } else if (m.equals(NXTMessage.rotateTo)) {
-                    Motors.rotateTo(Integer.parseInt(m.getValues()[0]), m.getValues()[1]);
-                }
+				} else if (m.equals(NXTMessage.oneCentimetreTravelled)) {
+					Motors.oneCentimentreTravelled(m.getValues()[0]);
+				} else if (m.equals(NXTMessage.rotateTo)) {
+					Motors.rotateTo(Integer.parseInt(m.getValues()[0]), m.getValues()[1]);
+				} else if (m.equals(NXTMessage.forward)) {
+					Motors.forward(m.getValues()[0]);
+				}
 			}
 		} else {
 			for (NXTMessage m : messages) {
@@ -179,9 +181,8 @@ public class Utilities {
 
 			@Override
 			public void run() {
-				Boolean run = true;
-				while (run) {
-					run = Motor.A.isMoving() || Motor.B.isMoving() || Motor.C.isMoving();
+				while ((Motor.A.isMoving() & !Motor.A.isStalled()) || (Motor.B.isMoving() & !Motor.B.isStalled())
+						|| (Motor.C.isMoving() & !Motor.C.isStalled())) {
 					try {
 						Thread.sleep(1);
 					} catch (InterruptedException e) {

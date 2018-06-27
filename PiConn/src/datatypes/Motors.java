@@ -23,6 +23,16 @@ public class Motors {
 	}
 
 	/**
+	 * send the command forward to a motor
+	 * 
+	 * @param motor
+	 *            the name of the motor
+	 */
+	public static void forward(String motor) {
+		getMotor(motor).forward();
+	}
+
+	/**
 	 * this method returns the TachoCount of a motor
 	 * 
 	 * @param motor
@@ -51,14 +61,14 @@ public class Motors {
 	 *            the name of the motor
 	 */
 	public static void setSpeed(float speed, String motor) {
-		NXTRegulatedMotor m = getMotor(motor);
-		m.setSpeed(speed);
-		m.forward();
+		getMotor(motor).setSpeed(speed);
 	}
 
 	/**
 	 * send a message every travelled one centimetre
-	 * @param motor the motor to listen for
+	 * 
+	 * @param motor
+	 *            the motor to listen for
 	 */
 	public static void oneCentimentreTravelled(String motor) {
 		NXTRegulatedMotor m = getMotor(motor);
@@ -70,7 +80,7 @@ public class Motors {
 			@Override
 			public void run() {
 				if (m.getRotationSpeed() != 0) {
-					dist[0] += (m.getRotationSpeed() * 1.88495559215) * 0.001;
+					dist[0] += (m.getRotationSpeed() * 1.88495559215) * 0.1;
 					if (dist[0] >= 1.0) {
 						dist[0] -= 1.0;
 						Connection.send(NXTMessage.oneCentimetreTravelled(motor));
@@ -81,7 +91,7 @@ public class Motors {
 					t.cancel();
 				}
 			}
-		}, 0, 40);
+		}, 0, 100);
 	}
 
 	/**
@@ -106,9 +116,17 @@ public class Motors {
 		getMotor(motor).flt();
 	}
 
-    public static void rotateTo(int angle, String motor) {
-        getMotor(motor).rotateTo(angle);
-    }
+	/**
+	 * rotates the motor to a specific angle
+	 * 
+	 * @param angle
+	 *            the angle to rotate to
+	 * @param motor
+	 *            the motor to rotate
+	 */
+	public static void rotateTo(int angle, String motor) {
+		getMotor(motor).rotateTo(angle);
+	}
 
 	/**
 	 * this method returns, if the motor is moving
