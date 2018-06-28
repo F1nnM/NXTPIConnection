@@ -142,7 +142,7 @@ public class DatabaseManager {
 	 * turning call {@link #doneTurning(double) doneTurning} method and enter the
 	 * turn angle, to start capturing
 	 */
-	public void turning() {
+	public static void turning() {
 		turning = true;
 	}
 
@@ -152,7 +152,7 @@ public class DatabaseManager {
 	 * @param degrees
 	 *            the turn angle
 	 */
-	public void doneTurning(double degrees) {
+	public static void doneTurning(double degrees) {
 		turning = false;
 		viewingDirection += degrees;
 		if ((viewingDirection % 360.0) > 1.0) {
@@ -165,7 +165,7 @@ public class DatabaseManager {
 	 * 
 	 * @return the Viewing direction of the robot
 	 */
-	public double getViewingDirection() {
+	public static double getViewingDirection() {
 		return viewingDirection;
 	}
 
